@@ -25,6 +25,13 @@ app.get('/', function (req, res) {
     stream.pipe(res);
 });
 
+app.get('/courses', function (req, res) {
+    mu.clearCache();
+    var stream = mu.compileAndRender('courses/index.html',{pageName: school.name,schoolName: school.name,
+        description: school.description});
+    stream.pipe(res);
+});
+
 
 app.use("/css",express.static(__dirname + '/css'));
 app.use("/scss",express.static(__dirname + '/scss'));
