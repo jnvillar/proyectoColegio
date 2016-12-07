@@ -1,6 +1,6 @@
 var school = function(){
     this.name = "Don Bosco";
-    this.description = "Descripcion Colegio";
+    this.description = "Bienvenido  al campus  virtual  del  colegio  Don  Bosco";
 };
 
 school = new school();

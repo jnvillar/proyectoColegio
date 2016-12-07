@@ -16,12 +16,12 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
 }));
 
 var school = funcionesColegio.school();
-
+console.log(school);
 
 app.get('/', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('mainpage/index.html',{tituloPagina: school.name,tituloColegio: school.name,
-                                                    descripcion: school.description});
+    var stream = mu.compileAndRender('mainpage/index.html',{pageName: school.name,schoolName: school.name,
+                                                    description: school.description});
     stream.pipe(res);
 });
 
@@ -32,7 +32,7 @@ app.use("/img",express.static(__dirname + '/images'));
 app.use("/js",express.static(__dirname + '/js'));
 app.use(express.static(__dirname +  '/'));
 
-app.use(function(req, res, next){
+/*app.use(function(req, res, next){
     res.status(404);
     if (req.accepts('html')) {
         mu.clearCache();
@@ -40,6 +40,6 @@ app.use(function(req, res, next){
         stream.pipe(res);
         return;
     }
-});
+});*/
 
 app.listen(process.env.PORT || 3000);

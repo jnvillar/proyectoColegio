@@ -1,21 +1,31 @@
-/*--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
---*/
+
+@import url('https://fonts.googleapis.com/css?family=Aref+Ruqaa|Raleway');
 h4, h5, h6,
 h1, h2, h3 {margin: 0;}
 ul, ol {margin: 0;}
 p {margin: 0;}
 html, body{
- font-family: 'Hind', sans-serif;
+ font-family: 'Hind', sans-serif,'Woodlands','Aref+Ruqaa','Raleway';
    font-size: 100%;
    background:#fff; 
 }
 
-#fontTitulo{
-    
+@font-face {
+    font-family: Woodlands;
+    src: url("../fonts/woodlands.otf");
+    format("opentype");
+}
+
+.fontTitulo{
+    font-family: Woodlands;
+    font-size: 200px;
+    color: #f9f2f4;
+}
+
+.descriptionMainPage {
+    font-family: 'Raleway', serif !important;
+    font-size: 30px;
+    color: white;
 }
 
 a {
@@ -50,7 +60,10 @@ span.bann-line {
     width: 100px;
     display: block;
     margin:1.5em auto 1.5em;
+    font-family: 'Aref Ruqaa', serif;
+
 }
+
 .banner-main p {
     font-size: 1.05em;
     color: #fff;
