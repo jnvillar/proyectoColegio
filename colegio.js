@@ -1,13 +1,13 @@
-var colegio = function(){
-    this.nombre = "Don Bosco";
-    this.descripcion = "Descripcion Colegio";
+var school = function(){
+    this.name = "Don Bosco";
+    this.description = "Descripcion Colegio";
 };
 
-colegio = new colegio();
+school = new school();
 
 
 module.exports = {
-    colegio: function () {
-        return colegio;
+    school: function () {
+        return school;
     },
 };

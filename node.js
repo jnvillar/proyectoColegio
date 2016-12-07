@@ -9,27 +9,28 @@ var  funcionesColegio = require('./colegio');
 //var manejadorArticulos = require('./manejadorArticulos');
 body = require('body-parser');
 var app = express();
-mu.root = __dirname + '/public';
+mu.root = __dirname + '/';
 app.use(body.json());
 app.use(body.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-var colegio = funcionesColegio.colegio();
-console.log(colegio);
+var school = funcionesColegio.school();
+
+
 app.get('/', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('index.html',{tituloPagina: colegio.nombre,tituloColegio: colegio.nombre,
-                                                    descripcion: colegio.descripcion});
+    var stream = mu.compileAndRender('mainpage/index.html',{tituloPagina: school.name,tituloColegio: school.name,
+                                                    descripcion: school.description});
     stream.pipe(res);
 });
 
 
-app.use("/css",express.static(__dirname + '/public/css'));
-app.use("/scss",express.static(__dirname + '/public/scss'));
-app.use("/img",express.static(__dirname + '/public/images'));
-app.use("/js",express.static(__dirname + '/public/js'));
-app.use(express.static(__dirname +  '/public'));
+app.use("/css",express.static(__dirname + '/css'));
+app.use("/scss",express.static(__dirname + '/scss'));
+app.use("/img",express.static(__dirname + '/images'));
+app.use("/js",express.static(__dirname + '/js'));
+app.use(express.static(__dirname +  '/'));
 
 app.use(function(req, res, next){
     res.status(404);
