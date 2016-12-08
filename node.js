@@ -5,7 +5,7 @@ var fs = require('fs');
 var express = require("express");
 var _ = require('underscore');
 var request = require('request');
-var  funcionesColegio = require('./colegio');
+var  funciones = require('./colegio');
 //var manejadorArticulos = require('./manejadorArticulos');
 body = require('body-parser');
 var app = express();
@@ -15,13 +15,16 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-var school = funcionesColegio.school();
-console.log(school);
+var school = funciones.school();
+var pageInfo = funciones.pageInfo()
 
 app.get('/', function (req, res) {
     mu.clearCache();
     var stream = mu.compileAndRender('mainpage/index.html',{pageName: school.name,schoolName: school.name,
-                                                    description: school.description});
+        description: school.description, longDescription: school.longdescription, schoolLocation: school.location,
+        schoolTelNumber: school.telNumber, schoolStreet: school.street, schoolNeighborhood: school.neighborhood,
+        schoolMail: school.mail, schoolFace: school.facebook, schoolTwitter: school.twitter, businessName:
+        pageInfo.businessName, businessPage: pageInfo.businessPage});
     stream.pipe(res);
 });
 
@@ -31,6 +34,18 @@ app.get('/courses', function (req, res) {
         description: school.description});
     stream.pipe(res);
 });
+
+app.post('/mandarEmail',function (req,res) {
+    mu.clearCache();
+    var stream = mu.compileAndRender('mainpage/index.html',{pageName: school.name,schoolName: school.name,
+        description: school.description, longDescription: school.longdescription, schoolLocation: school.location,
+        schoolTelNumber: school.telNumber, schoolStreet: school.street, schoolNeighborhood: school.neighborhood,
+        schoolMail: school.mail, schoolFace: school.facebook, schoolTwitter: school.twitter, businessName:
+        pageInfo.businessName, businessPage: pageInfo.businessPage});
+    stream.pipe(res);
+});
+
+
 
 
 app.use("/css",express.static(__dirname + '/css'));

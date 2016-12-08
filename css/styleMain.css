@@ -1,11 +1,11 @@
 
-@import url('https://fonts.googleapis.com/css?family=Aref+Ruqaa|Raleway');
+@import url('https://fonts.googleapis.com/css?family=Aref+Ruqaa|Raleway|Lobster|Josefin+Sans');
 h4, h5, h6,
 h1, h2, h3 {margin: 0;}
 ul, ol {margin: 0;}
 p {margin: 0;}
 html, body{
- font-family: 'Hind', sans-serif,'Woodlands','Aref+Ruqaa','Raleway';
+ font-family: 'Hind', sans-serif,'Woodlands','Aref+Ruqaa','Raleway','Lobster','Josefin+Sans';
    font-size: 100%;
    background:#fff; 
 }
@@ -23,7 +23,8 @@ html, body{
 }
 
 .descriptionMainPage {
-    font-family: 'Raleway', serif !important;
+    font-family: 'Josefin+Sans', serif !important;
+    font-weight: lighter;
     font-size: 30px;
     color: white;
 }
