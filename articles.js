@@ -1,5 +1,5 @@
 var articles;
-var debug = true;
+
 
 module.exports = {
     start: function (db) {
@@ -7,8 +7,19 @@ module.exports = {
     },
 
     newArticle: function (body) {
-        if(debug) console.log(body);
+        // console.log(body);
         articles.insert(body);
+    },
+
+    getArticles: function(db){
+       return articles.find({});
+    },
+
+    findArticle: function (id,db) {
+        articles.find({id:id},function (e,docs) {
+            //console.log(docs);
+            return docs[0];
+        })
     },
 };
 

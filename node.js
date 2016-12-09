@@ -37,8 +37,13 @@ app.get('/', function (req, res) {
 
 app.get('/courses', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('courses/index.html',{page: page,school: school});
-    stream.pipe(res);
+    var articles =  articleManager.getArticles(db);
+    articles.then(function (result) {
+        console.log(result);
+        //console.log(articles[0].title);
+        var stream = mu.compileAndRender('courses/index.html',{page: page,school: school, articles: result});
+        stream.pipe(res);
+    });
 });
 
 app.get('/courses/nuevoArticulo', function (req, res) {
@@ -56,6 +61,14 @@ app.post("/courses/postArticulo",function(req,res){
 app.post('/mandarEmail',function (req,res) {
     mu.clearCache();
     var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: page});
+    stream.pipe(res);
+});
+
+app.get('/courses/article/:id', function (req, res) {
+    mu.clearCache();
+    var id = req.params.id;
+    var articulo = articleManager.findArticle(id,db);
+    var stream = mu.compileAndRender('single.html', {title: "Reddit" ,contenido: articulo.contenido, imagen: articulo.imagen, id:articulo.id, listcomentarios: _.values(articulo.comentarios),autor: articulo.autor, imgautor: articulo.imgautor});
     stream.pipe(res);
 });
 

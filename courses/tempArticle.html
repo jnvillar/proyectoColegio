@@ -55,48 +55,44 @@
         </script>
     </div>
 </div>
-<div class="content">
+
+
+<div class="single">
     <div class="container">
-        <div class="content-grids">
-            <div class="col-md-8 content-main">
-                <div class="content-grid">
+        <div class="col-md-8 single-main">
+            <div class="single-grid">
+                <img src="{{img}}" alt=""/>
 
-                    <form id="nuevoArticulo" action="../courses/postArticulo" method="POST">
+                <p> {{content}} </p>
+            </div>
+            <ul class="comment-list">
+                <h5 class="post-author_head">Written by {{author}}</h5>
+                <li><img src="{{imgauthor}}" class="img-responsive" alt="">
+                    <div class="clearfix"></div>
+                </li>
+            </ul>
 
-                        <div class="row">
-                            <label for="titulo">Titulo Articulo:</label><br />
-                            <input id="titulo" class="input" name="title" type="text" value="" size="30" /><br />
-                        </div>
+            {{#listcomentarios}}
+            <p id = "usuario">Usuario: {{nombre}}</p>
+            <div id = "comentario">
+                <p id = "comentariotexto">{{comentario}}</p>
+            </div>
+            {{/listcomentarios}}
 
-                        <div class="row">
-                            <label for="resumen">Resumen del Articulo:</label><br />
-                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div class="row">
-                            <label for="contenido">Contenido del Articulo:</label><br />
-                            <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div class="row">
-                            <label for="imagen">Url Imagen:</label><br />
-                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div class="row">
-                            <label for="autor">Autor:</label><br />
-                            <input id="autor" class="input" name="author" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div class="row">
-                            <label for="imgautor">Imagen Autor:</label><br />
-                            <input id="imgautor" class="input" name="imgauthor" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <input id="submit_button" type="submit" value="Mandar Articulo" />
-
-                    </form>
+            <form id="contact_form" action="/newComment/{{_id}}" method="POST">
+                <h3>Leave a comment</h3>
+                <div id = "comment" class="row">
+                    <label for="comment">Nombre</label><br />
+                    <input id="comment" class="input" name="nombre" type="text" value="" size="30" /><br />
                 </div>
+                <div id = "comment" class="row">
+                    <label for="comment">Comentario</label><br />
+                    <input id="comment" class="input" name="comentario" type="text" value="" size="30" /><br />
+                </div>
+                <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
+            </form>
+
+        </div>
             </div>
             <div class="col-md-4 content-right">
                 <div class="recent">
@@ -139,7 +135,6 @@
 
 <div class="footer">
     <div class="container">
-        <p>Copyrights © 2016 <a href="{{page.businessPage}}">{{page.businessName}}</a></p>
+        <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
     </div>
 </div>
-

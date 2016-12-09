@@ -55,11 +55,24 @@
 					</script>
 	 </div>
 </div>
+
 <div class="content">
 	 <div class="container">
 		 <div class="content-grids">
 			 <div class="col-md-8 content-main">
 				 <div class="content-grid">
+
+					 {{#articles}}
+					 <div class="content-grid-info">
+						 <img src= "{{img}}" alt=""/>
+						 <div class="post-info">
+							 <h4><a href="/post/{{_id}}">{{title}}</a>  </h4>
+							 <p>{{summary}}</p>
+							 <a href="/post/{{_id}}"><span></span>Seguir leyendo</a>
+						 </div>
+					 </div>
+					 {{/articles}}
+
 					 <div class="content-grid-info">
 						 <img src="../images/post1.jpg" alt=""/>
 						 <div class="post-info">
@@ -124,6 +137,7 @@
 		  </div>
 	  </div>
 </div>
+
 <div class="footer">
 	 <div class="container">
 		 <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
