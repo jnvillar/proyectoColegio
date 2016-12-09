@@ -18,12 +18,12 @@ html, body{
 
 .fontTitulo{
     font-family: Woodlands;
-    font-size: 200px;
+    font-size: 1200%;
     color: #f9f2f4;
 }
 
 .descriptionMainPage {
-    font-family: 'Josefin+Sans', serif !important;
+    font-family: 'Raleway', serif !important;
     font-weight: lighter;
     font-size: 30px;
     color: white;
@@ -128,7 +128,7 @@ span.mover {
     background: none;
 }
 .navbar-inverse .navbar-nav > li > a {
-    color:#EA548E;
+    color:#1a4a72;
     font-family: 'Oswald', sans-serif;
     line-height: 1.5em;
 }
@@ -259,7 +259,7 @@ span.flr {
 }
 /*--footer end here--*/
 .copy-right {
-    background:#EA548E;
+    background:#1a4a72;
     padding: 1.5em 0em;
     text-align: center;
 }
@@ -282,7 +282,8 @@ span.flr {
 }
 .about-top h2 {
     font-size: 3em;
-    color:#EA548E;
+    /*color:#EA548E;*/
+    color: #1a4a72;
     text-align: center;
     font-family: 'Oswald', sans-serif;
 }
@@ -402,7 +403,8 @@ span.ab-badge:hover {
 }
 .team-top h3 {
     font-size: 3em;
-    color: #EA548E;
+    /*color: #1a4a72;*/
+    color: #1a4a72;
     text-align: center;
     font-family: 'Oswald', sans-serif;
 }
@@ -604,11 +606,11 @@ span.ab-badge:hover {
   color:#006e96;	
 }
 .serv-text h4 a:hover{
-	color:#EA548E;	
+	color:#1a4a72;	
 }
 .service-top h3 {
     font-size: 3em;
-    color: #EA548E;
+    color: #1a4a72;
     text-align: center;
     font-family: 'Oswald', sans-serif;  
 }
@@ -641,8 +643,8 @@ span.ab-badge:hover {
 }
 .ser-strip-main a {
     font-size: 1em;
-      color: #EA548E;
-    border: 1px solid #EA548E;
+      color: #1a4a72;
+    border: 1px solid #1a4a72;
     
     padding: 0.5em 1.5em;
     display: inline-block;
@@ -784,7 +786,7 @@ span.ab-badge:hover {
 }
 .portfolio-top h3 {
     font-size: 3em;
-    color: #EA548E;
+    color: #1a4a72;
     text-align: center;
     font-family: 'Oswald', sans-serif;
 }
@@ -926,7 +928,7 @@ i.link {
 }
 .advantages-main h4 {
     font-size: 2em;
-    color:#EA548E;
+    color:#1a4a72;
     margin-bottom: 0.5em;
     font-family: 'Oswald', sans-serif;
 }
@@ -991,7 +993,7 @@ i.link {
 .contact-left input[type="submit"] {
     font-size: 1em;
     color: #fff;
-    background: #EA548E;
+    background: #1a4a72;
     border: none;
     padding: 0.5em 1.5em;
     outline: none;
@@ -1249,7 +1251,7 @@ span.flr {
 }
 @media (max-width:767px){
 .navbar-inverse .navbar-toggle {
-    background: #EA548E;
+    background: #1a4a72;
     border:none;
 }
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {

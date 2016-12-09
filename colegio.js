@@ -89,7 +89,7 @@ school = new school(bosses,facilities,archivements,gallery1,gallery2,gallery3);
 var page = function(){
     this.title = "Don Bosco Online";
     this.businessName = "Nombre de la empresa";
-    this.businessPage = "pagina de la empresa";
+    this.businessPage = "../";
 };
 page = new page();
 

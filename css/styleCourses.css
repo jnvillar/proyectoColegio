@@ -40,6 +40,16 @@ margin-top:3.5em;
 width: 55%;
 position:relative;
 }
+
+.row {
+  margin-top: 2%;
+}
+
+#submit_button{
+  margin-top: 4%;
+  margin-left: -2%;
+}
+
 .search form {
 border: 1px solid #dbdbdb;
 background:#dbdbdb;
