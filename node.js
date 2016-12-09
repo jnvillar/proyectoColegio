@@ -16,24 +16,24 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
 
 var school = funciones.school();
 console.log(school);
-var pageInfo = funciones.pageInfo()
+var page = funciones.page();
+console.log(page);
 
 app.get('/', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: pageInfo, });
+    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: page});
     stream.pipe(res);
 });
 
 app.get('/courses', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('courses/index.html',{pageName: school.name,schoolName: school.name,
-        description: school.description});
+    var stream = mu.compileAndRender('courses/index.html',{page: page,school: school});
     stream.pipe(res);
 });
 
 app.post('/mandarEmail',function (req,res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: pageInfo});
+    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: page});
     stream.pipe(res);
 });
 
