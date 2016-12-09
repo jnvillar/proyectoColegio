@@ -6,7 +6,6 @@ var express = require("express");
 var _ = require('underscore');
 var request = require('request');
 var  funciones = require('./colegio');
-//var manejadorArticulos = require('./manejadorArticulos');
 body = require('body-parser');
 var app = express();
 mu.root = __dirname + '/';
@@ -16,15 +15,12 @@ app.use(body.urlencoded({     // to support URL-encoded bodies
 }));
 
 var school = funciones.school();
+console.log(school);
 var pageInfo = funciones.pageInfo()
 
 app.get('/', function (req, res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('mainpage/index.html',{pageName: school.name,schoolName: school.name,
-        description: school.description, longDescription: school.longdescription, schoolLocation: school.location,
-        schoolTelNumber: school.telNumber, schoolStreet: school.street, schoolNeighborhood: school.neighborhood,
-        schoolMail: school.mail, schoolFace: school.facebook, schoolTwitter: school.twitter, businessName:
-        pageInfo.businessName, businessPage: pageInfo.businessPage});
+    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: pageInfo, });
     stream.pipe(res);
 });
 
@@ -37,11 +33,7 @@ app.get('/courses', function (req, res) {
 
 app.post('/mandarEmail',function (req,res) {
     mu.clearCache();
-    var stream = mu.compileAndRender('mainpage/index.html',{pageName: school.name,schoolName: school.name,
-        description: school.description, longDescription: school.longdescription, schoolLocation: school.location,
-        schoolTelNumber: school.telNumber, schoolStreet: school.street, schoolNeighborhood: school.neighborhood,
-        schoolMail: school.mail, schoolFace: school.facebook, schoolTwitter: school.twitter, businessName:
-        pageInfo.businessName, businessPage: pageInfo.businessPage});
+    var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: pageInfo});
     stream.pipe(res);
 });
 

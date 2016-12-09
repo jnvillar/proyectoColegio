@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>{{pageName}}</title>
+<title>{{page.tittle}}</title>
 <link href="../css/bootstrapMain.css" rel="stylesheet" type="text/css" media="all">
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="js/jquery-1.11.0.min.js"></script>
@@ -47,9 +47,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="banner" id="home">
 	<div class="container">
 		<div class="banner-main wow bounceInDown" data-wow-delay="0.3s">
-			<div class="fontTitulo">{{schoolName}}</div>
+			<div class="fontTitulo">{{school.name}}</div>
 	         <span class="bann-line"> </span>
-	         <div class="descriptionMainPage">{{description}}</div>
+	         <div class="descriptionMainPage">{{school.description}}</div>
 	           <a href="#about" class="scroll"><span class="mover"> </span></a>
 		</div>
 	</div>
@@ -115,19 +115,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="about-top wow fadeInDown" data-wow-delay="0.3s">
 				<h2>Sobre el colegio</h2>
 				<span class="heading-line"> </span>
-				<p>{{longDescription}}</p>
+				<p>{{school.longDescription}}</p>
 			</div>
 			<div class="about-bottom">
 				<div class="col-md-6 about-left wow fadeInLeft" data-wow-delay="0.3s">
-					<h4>Our Success</h4>
-					<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam.</p>
+					<h4>Ultimos Logros</h4>
+					<p>Estamos orgullosos de lo que hemos logrado</p>
 					<div class="about-grid">
 						<div class="about-icon">
 							<a href="#" class="#"> <span class="learn"> </span> </a>
 						</div>
 						<div class="about-text">
-							<h5>Nor again is there anyone</h5>
-							<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain</p>
+							<h5>{{school.archivement1}}</h5>
+							<p>{{school.archivement1Description}}</p>
 						</div>
 					   <div class="clearfix"> </div>
 					</div>
@@ -136,8 +136,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#" class="#"> <span class="degr"> </span> </a>
 						</div>
 						<div class="about-text">
-							<h5>Nor again is there anyone</h5>
-							<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain</p>
+							<h5>{{school.archivement2}}</h5>
+							<p>{{school.archivement2Description}}</p>
 						</div>
 					   <div class="clearfix"> </div>
 					</div>
@@ -146,8 +146,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#" class="#">  <span class="ab-badge"> </span> </a>
 						</div>
 						<div class="about-text">
-							<h5>Nor again is there anyone</h5>
-							<p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain</p>
+							<h5>{{school.archivement3}}</h5>
+							<p>{{school.archivement3Description}}</p>
 						</div>
 					   <div class="clearfix"> </div>
 					</div>
@@ -161,31 +161,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</div>
 </div>
 <!--about end here-->
-<!--team start here-->
+<!--team start here CHE, ESTO SE PUEDE GENERAR AUTOMATICAMENTE EN VEZ DE HARDCODEAR LOS 4 BOSS-->
 <div class="team">
 	<div class="container">
 		<div class="team-main">
 			<div class="team-top wow fadeInDown" data-wow-delay="0.3s">
-				<h3>Our Team</h3>
+				<h3>Directivos</h3>
 				<span class="heading-line"> </span>
-				<p>Nemo enim ipsam voluptatem quia.</p>
+				<p>Descripcion directivos</p>
 			</div>
 			<div class="team-bottom wow fadeInRight" data-wow-delay="0.3s">
 			  <div class="col-md-3 team-grids">
 			    <!-- normal -->
 			    <div class="ih-item circle effect5"><a href="#">
-			        <div class="img"><img src="../images/t1.jpg" alt="img" class="img-responsive"></div>
+			        <div class="img"><img src={{school.boss1Photo}} alt="img" class="img-responsive"></div>
 			        <div class="info">
 			          <div class="info-back">
-			            <h3>Malorum</h3>
+			            <h3>{{school.boss1}}</h3>
 			          </div>
 			        </div></a></div>
 			        <div class="team-bottom">
-			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        	  <p>{{school.boss1Description}}</p>
 			        	  <ul>
-			        	  	<li><a href="#" class="fa"> </a></li>
-			        	  	<li><a href="#" class="tw"> </a></li>
-			        	  	<li><a href="#" class="g"> </a></li>
+			        	  	<li><a href="{{school.boss1Mail}}"class="g"> </a></li>
 			        	  </ul>
 			        </div>
 
@@ -194,18 +192,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  <div class="col-md-3 team-grids">
 			   <!-- normal -->
 			    <div class="ih-item circle effect5"><a href="#">
-			        <div class="img"><img src="../images/t2.jpg" alt="img" class="img-responsive"></div>
+			        <div class="img"><img src={{school.boss2Photo}} alt="img" class="img-responsive"></div>
 			        <div class="info">
 			          <div class="info-back">
-			            <h3>Bonorum</h3>
+			            <h3>{{school.boss2}}</h3>
 			          </div>
 			        </div></a></div>
 			        <div class="team-bottom">
-			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        	  <p>{{school.boss2Description}}</p>
 			        	  <ul>
-			        	  	<li><a href="#" class="fa"> </a></li>
-			        	  	<li><a href="#" class="tw"> </a></li>
-			        	  	<li><a href="#" class="g"> </a></li>
+			        	  	<li><a href="{{schoo.boss2Mail}}" class="g"> </a></li>
 			        	  </ul>
 			        </div>
 			    <!-- end normal -->
@@ -213,18 +209,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  <div class="col-md-3 team-grids">
 			    <!-- normal -->
 			    <div class="ih-item circle effect5"><a href="#">
-			        <div class="img"><img src="../images/t3.jpg" alt="img" class="img-responsive"></div>
+			        <div class="img"><img src={{school.boss3Photo}} alt="img" class="img-responsive"></div>
 			        <div class="info">
 			          <div class="info-back">
-			            <h3>Finibus</h3>
+			            <h3>{{school.boss3}}</h3>
 			          </div>
 			        </div></a></div>
 			        <div class="team-bottom">
-			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        	  <p>{{school.boss3Description}}</p>
 			        	  <ul>
-			        	  	<li><a href="#" class="fa"> </a></li>
-			        	  	<li><a href="#" class="tw"> </a></li>
-			        	  	<li><a href="#" class="g"> </a></li>
+			        	  	<li><a href="{{school.boss3Mail}}" class="g"> </a></li>
 			        	  </ul>
 			        </div>
 			    <!-- end normal -->
@@ -232,18 +226,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			   <div class="col-md-3 team-grids">
 			    <!-- normal -->
 			    <div class="ih-item circle effect5"><a href="#">
-			        <div class="img"><img src="../images/t4.jpg" alt="img" class="img-responsive"></div>
+			        <div class="img"><img src={{school.boss4Photo}} alt="img" class="img-responsive"></div>
 			        <div class="info">
 			          <div class="info-back">
-			            <h3>Rackham</h3>
+			            <h3>{{school.boss4}}</h3>
 			          </div>
 			        </div></a></div>
 			        <div class="team-bottom">
-			        	  <p>On the other hand, we denounce with righteous indignation.</p>
+			        	  <p>{{school.boss4Description}}</p>
 			        	  <ul>
-			        	  	<li><a href="#" class="fa"> </a></li>
-			        	  	<li><a href="#" class="tw"> </a></li>
-			        	  	<li><a href="#" class="g"> </a></li>
+			        	  	<li><a href="{{school.boss4Mail}}" class="g"> </a></li>
 			        	  </ul>
 			        </div>
 			    <!-- end normal -->
@@ -258,15 +250,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="container">
 		<div class="service-main">
 			<div class="service-top wow fadeInDown" data-wow-delay="0.3s">
-				<h3>Services</h3>
+				<h3>Instalaciones</h3>
 				<span class="heading-line"> </span>
-				<p>Nemo enim ipsam voluptatem quia.</p>
+				<p>{{school.facilitiesDescription}}</p>
 			</div>
 			<div class="services-bottom">
 			   <div class="serice-layer wow fadeInRight" data-wow-delay="0.3s">
 				<div class="col-md-6 services-grid">
 					<div class="col-md-6 serv-img">
-						<a href="#"><img src="../images/s1.jpg" alt="" class="img-responsive"></a>
+						<a href="#"><img src={{facilities[1].photo}} alt="" class="img-responsive"></a>
 							<div class="blog-discription">
 							  <div class="theme-border">
 								<div class="tg-display-table">
@@ -274,7 +266,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="blog-title">
 											<h4><a href="index.html">Coaching</a></h4>
 											<ul class="blod-meta">
-												<li>Dated: March 20, 2016</li>
+												<li>{{school.facilities[1].date}}</li>
 												<div class="clearfix"> </div>
 											</ul>
 										</div>
@@ -284,14 +276,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</div>
 					</div>
 					<div class="col-md-6 serv-text">
-						<h4>Neque porro quisquam</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+						<h4>{{school.facilities[1].name}}</h4>
+
+						<p>{{school.facilities[1].description}}</p>
 					</div>
 				  <div class="clearfix"> </div>
 				</div>
 				<div class="col-md-6 services-grid">
 					<div class="col-md-6 serv-img">
-						<a href="#"><img src="../images/s2.jpg" alt="" class="img-responsive"></a>
+						<a href="#"><img src="{{school.facilities[2].photo}}" alt="" class="img-responsive"></a>
 						<div class="blog-discription">
 							  <div class="theme-border">
 								<div class="tg-display-table">
@@ -299,7 +293,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="blog-title">
 											<h4><a href="index.html">Coaching</a></h4>
 											<ul class="blod-meta">
-												<li>Dated: March 20, 2016</li>
+												<li>{{school.facilities[2].date}}</li>
 												<div class="clearfix"> </div>
 											</ul>
 										</div>
@@ -309,8 +303,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</div>
 					</div>
 					<div class="col-md-6 serv-text">
-						<h4>Et iusto dignissimos ducimus</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						<h4>{{school.facilities[2].name}}</h4>
+						<p> {{school.facilities[2].description}}</p>
 					</div>
 				</div>
 				<div class="clearfix"> </div>
@@ -1257,7 +1251,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--contact end here-->
 <!--map start here-->
 <div class="map">
-	<iframe src="{{schoolLocation}}" frameborder="0" style="border:0" allowfullscreen> </iframe>
+	<iframe src="{{school.location}}" frameborder="0" style="border:0" allowfullscreen> </iframe>
 </div>
 <!--//map-->
 <!--footer start here-->
@@ -1267,22 +1261,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="col-md-4 ftr-grid wow zoomIn" data-wow-delay="0.3s">
 				<h3>Otra Informacion</h3>
 				<span class="ftr-line"> </span>
-				<p>{{schoolTelNumber}}</p>
+				<p>{{school.telNumber}}</p>
 			</div>
 			<div class="col-md-4 ftr-grid ftr-mid wow zoomIn" data-wow-delay="0.3s">
 				 <h3>Redes Sociales</h3>
 				 <span class="ftr-line flm"> </span>
 				 <ul >
-				 	<li><a href="{{schoolFace}}"><span class="fa"> </span></a></li>
-				 	<li><a href="{{schoolTwitter}}"><span class="tw"> </span></a></li>
-				 	<li><a href="{{schoolMail}}"><span class="gmail"> </span></a></li>
+				 	<li><a href="{{school.facebook}}"><span class="fa"> </span></a></li>
+				 	<li><a href="{{school.twitter}}"><span class="tw"> </span></a></li>
+				 	<li><a href="{{school.mail}}"><span class="gmail"> </span></a></li>
 				 </ul>
 			</div>
 			<div class="col-md-4 ftr-grid ftr-rit wow zoomIn" data-wow-delay="0.3s">
 				 <h3>Dirección</h3>
 				 <span class="ftr-line flr"> </span>
-				 <p>{{schoolStreet}}</p>
-				 <p> {{schoolNeighborhood}}</p>
+				 <p>{{school.street}}</p>
+				 <p> {{school.neighborhood}}</p>
 			</div>
 			<div class="clearfix"> </div>
 		</div>
@@ -1293,7 +1287,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="copy-right">
 	<div class="container">
 		 <div class="copy-rights-main wow zoomIn" data-wow-delay="0.3s">
-    	    <p>© 2016 <a href="{{businessPage}}" target="_blank">{{businessName}}</a> </p>
+    	    <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
     	 </div>
     </div>
     <script type="text/javascript">
