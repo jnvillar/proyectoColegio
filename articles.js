@@ -1,13 +1,16 @@
+var SchemArticles;
 var articles;
 
 module.exports = {
     start: function (db) {
-        articles = db.create('articles');
+        SchemArticles = db.Schema({title:String,summary:String,content:String,img:String,author:String,imgAuthor:String});
+        articles = db.model('article', SchemArticles);
     },
 
     newArticle: function (body) {
         // console.log(body);
-        articles.insert(body);
+        var newArticle = new articles(body);
+        newArticle.save()
     },
 
     getArticles: function(){

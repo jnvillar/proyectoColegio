@@ -1,13 +1,15 @@
+var SchemComments;
 var comments;
 
 module.exports = {
     start: function (db) {
-        comments = db.create('comments');
+        SchemComments = db.Schema({name:String,comment:String,postId:String,likes:Number,dislikes:Number});
+        comments = db.model('comment', SchemComments);
     },
 
     newComment: function (body) {
-        //console.log(body);
-        comments.insert(body);
+        var newComment = new comments(body);
+        newComment.save();
     },
 
     getComments: function(id){
@@ -15,11 +17,25 @@ module.exports = {
     },
 
     voteComment: function (id,type) {
-        console.log(id);
         if(type == 0){
-            comments.findOneAndUpdate({ _id: id}, { $inc: { likes : 1  } });
+            comments.findOne({_id: id}, function (err, user) {
+                user.likes = user.likes+1;
+                user.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                    }
+                });
+            });
+
         }else{
-            comments.findOneAndUpdate({ _id: id}, { $inc: { dislikes : 1  } });
+            comments.findOne({_id: id}, function (err, user) {
+                user.dislikes = user.dislikes+1;
+                user.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                    }
+                });
+            });
         }
 
     }

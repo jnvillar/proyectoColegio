@@ -1,13 +1,16 @@
 
-var mongo = require('mongodb');
-var monk = require('monk');
-var db =  monk('localhost:27017/prueba');
+
+var Promise = require("bluebird");
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/prueba');
+var db = mongoose.connection;
+
 
 var articleManager = require('./articles');
-articleManager.start(db);
+articleManager.start(mongoose);
 
 var commentsManager = require('./comments');
-commentsManager.start(db);
+commentsManager.start(mongoose);
 
 
 var http = require("http");
@@ -50,11 +53,11 @@ app.get('/courses', function (req, res) {
 app.get('/article/:id', function (req, res) {
     mu.clearCache();
     var id = req.params.id;
-    var article = articleManager.findArticle(id);
     var comments = commentsManager.getComments(id);
+    var article = articleManager.findArticle(id);
+
     article.then(function (article) {
         comments.then(function (comments) {
-            //console.log(comments);
             var stream = mu.compileAndRender('courses/single.html',{page: page,school: school, article: article[0],
                                              comments: comments});
             stream.pipe(res);
@@ -102,21 +105,21 @@ app.post('/mandarEmail',function (req,res) {
 });
 
 
-
 app.use("/css",express.static(__dirname + '/css'));
 app.use("/scss",express.static(__dirname + '/scss'));
 app.use("/img",express.static(__dirname + '/images'));
 app.use("/js",express.static(__dirname + '/js'));
 app.use(express.static(__dirname +  '/'));
 
-/*app.use(function(req, res, next){
+app.use(function(req, res){
     res.status(404);
     if (req.accepts('html')) {
         mu.clearCache();
-        var stream = mu.compileAndRender('404.html', {title: "Reddit"});
+        var stream = mu.compileAndRender('mainpage/404.html', {school: school,page: page});
         stream.pipe(res);
-        return;
     }
-});*/
+
+});
+
 
 app.listen(process.env.PORT || 3000);
