@@ -19,6 +19,7 @@ transition: 0.5s all ease;
 h1,h2,h3,h4,h5,h6{
 	margin:0;
 }
+
 p{
 	margin:0;
 }
@@ -45,9 +46,62 @@ position:relative;
   margin-top: 2%;
 }
 
+#articleForm{
+  margin-left: 0% ;
+}
+
+#commentForm{
+  margin-left: 2%;
+}
+
+.commentZone{
+  background: rgba(0, 0, 0, 0.1 );
+  margin-bottom: 3%;
+}
+
+#submit_button_comment{
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: -2%;
+}
+
+#input{
+  margin-top: 2%;
+}
+
+
+#commentLike{
+  float: right;
+  margin-right: 1%;
+}
+
+#commentDislike{
+  margin-left: 0%;
+  float: right;
+}
+
+#comment{
+  margin-left: 0%;
+}
+
+#commentBox{
+  margin-bottom: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+#commentUser{
+  width: 100%;
+}
+
+#commentText{
+  margin-top: 1%;
+  margin-left: 2%;
+}
+
 #submit_button{
   margin-top: 4%;
-  margin-left: -2%;
+  margin-left: 0%;
 }
 
 .search form {

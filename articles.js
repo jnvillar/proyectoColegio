@@ -1,6 +1,5 @@
 var articles;
 
-
 module.exports = {
     start: function (db) {
         articles = db.create('articles');
@@ -11,15 +10,12 @@ module.exports = {
         articles.insert(body);
     },
 
-    getArticles: function(db){
+    getArticles: function(){
        return articles.find({});
     },
 
-    findArticle: function (id,db) {
-        articles.find({id:id},function (e,docs) {
-            //console.log(docs);
-            return docs[0];
-        })
+    findArticle: function (id) {
+        return articles.find({_id:id});
     },
 };
 

@@ -6,6 +6,9 @@ var db =  monk('localhost:27017/prueba');
 var articleManager = require('./articles');
 articleManager.start(db);
 
+var commentsManager = require('./comments');
+commentsManager.start(db);
+
 
 var http = require("http");
 var url = require("url");
@@ -39,11 +42,25 @@ app.get('/courses', function (req, res) {
     mu.clearCache();
     var articles =  articleManager.getArticles(db);
     articles.then(function (result) {
-        console.log(result);
-        //console.log(articles[0].title);
-        var stream = mu.compileAndRender('courses/index.html',{page: page,school: school, articles: result});
+        var stream = mu.compileAndRender('courses/index.html',{page: page,school: school, articles: result.reverse()});
         stream.pipe(res);
     });
+});
+
+app.get('/article/:id', function (req, res) {
+    mu.clearCache();
+    var id = req.params.id;
+    var article = articleManager.findArticle(id);
+    var comments = commentsManager.getComments(id);
+    article.then(function (article) {
+        comments.then(function (comments) {
+            //console.log(comments);
+            var stream = mu.compileAndRender('courses/single.html',{page: page,school: school, article: article[0],
+                                             comments: comments});
+            stream.pipe(res);
+        });
+    });
+
 });
 
 app.get('/courses/nuevoArticulo', function (req, res) {
@@ -54,9 +71,29 @@ app.get('/courses/nuevoArticulo', function (req, res) {
 
 app.post("/courses/postArticulo",function(req,res){
     mu.clearCache();
-    articleManager.newArticle(req.body,db);
+    articleManager.newArticle(req.body);
     res.redirect('../courses');
 });
+
+app.post("/courses/newComment/:id",function(req,res){
+    mu.clearCache();
+    var id = req.params.id;
+    //console.log(req.body);
+    req.body.postId = id; req.body.likes = 0; req.body.dislikes = 0;
+    commentsManager.newComment(req.body);
+    res.redirect('/article/'+id);
+});
+
+app.get("/courses/voteComment/:idC/:vote/:idP",function(req,res){
+    mu.clearCache();
+    var idC = req.params.idC;
+    var type = req.params.vote;
+    var idP = req.params.idP;
+    commentsManager.voteComment(idC,type);
+    res.redirect('/article/'+idP);
+});
+
+
 
 app.post('/mandarEmail',function (req,res) {
     mu.clearCache();
@@ -64,13 +101,6 @@ app.post('/mandarEmail',function (req,res) {
     stream.pipe(res);
 });
 
-app.get('/courses/article/:id', function (req, res) {
-    mu.clearCache();
-    var id = req.params.id;
-    var articulo = articleManager.findArticle(id,db);
-    var stream = mu.compileAndRender('single.html', {title: "Reddit" ,contenido: articulo.contenido, imagen: articulo.imagen, id:articulo.id, listcomentarios: _.values(articulo.comentarios),autor: articulo.autor, imgautor: articulo.imgautor});
-    stream.pipe(res);
-});
 
 
 app.use("/css",express.static(__dirname + '/css'));

@@ -1,48 +1,20 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
-@juany360
-Unwatch 1
-Star 0
-Fork 0 juany360/MeliBlog
-Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathMeliBlog/public/single.html
-710b1a3  3 days ago
-@juany360 juany360 sadsaon
-1 contributor
-RawBlameHistory
-Executable File  152 lines (143 sloc)  4.99 KB
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Personal Blog a Blogging Category Flat Bootstarp  Responsive Website Template | Single :: w3layouts</title>
-    <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <link href="../css/style.css" rel='stylesheet' type='text/css' />
+    <title>Página de cursos</title>
+    <link href="../css/bootstrapCourses.css" rel='stylesheet' type='text/css' />
+    <link href="../css/styleCourses.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Personal Blog Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
 	Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design"
     />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <!----webfonts---->
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
-    <!----//webfonts---->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!--end slider -->
-    <!--script-->
-    <script type="text/javascript" src="../js/move-top.js"></script>
-    <script type="text/javascript" src="../js/easing.js"></script>
-    <!--/script-->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $(".scroll").click(function(event){
@@ -51,17 +23,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
         });
     </script>
-    <!---->
 
 </head>
 <body>
-<!---header---->
 <div class="header">
     <div class="container">
         <div class="logo">
-            <a href="../index.html"><img src="../images/logo.jpeg" title="" /></a>
+            <a href="../courses"><img src="../images/logo4.jpg" title="" /></a>
         </div>
-        <!---start-top-nav---->
         <div class="top-menu">
             <div class="search">
                 <form>
@@ -71,9 +40,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <span class="menu"> </span>
             <ul>
-                <li class="active"><a href="../index.html">HOME</a></li>
-                <li><a href="../about.html">ABOUT</a></li>
-                <li><a href="../contact.html">CONTACT</a></li>
+                <li><a href="../">HOME</a></li>
+                <li class="active"><a href="#">CURSOS</a></li>
+                <li><a href="contact.html">CONTACTO</a></li>
                 <div class="clearfix"> </div>
             </ul>
         </div>
@@ -84,87 +53,94 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 });
             });
         </script>
-        <!---//End-top-nav---->
     </div>
 </div>
-<!--/header-->
-<div class="single">
+
+<div class="content">
     <div class="container">
-        <div class="col-md-8 single-main">
-            <div class="single-grid">
-                <img src="{{imagen}}" alt=""/>
+        <div class="content-grids">
+            <div class="col-md-8 single-main">
 
-                <p> {{contenido}} </p>
-            </div>
-            <ul class="comment-list">
-                <h5 class="post-author_head">Written by {{autor}}</h5>
-                <li><img src="{{imgautor}}" class="img-responsive" alt="">
-                    <div class="clearfix"></div>
-                </li>
-            </ul>
-
-            {{#listcomentarios}}
-            <p id = "usuario">Usuario: {{nombre}}</p>
-            <div id = "comentario">
-                <p id = "comentariotexto">{{comentario}}</p>
-            </div>
-            {{/listcomentarios}}
-
-            <form id="contact_form" action="/newComment/{{id}}" method="POST">
-                <h3>Leave a comment</h3>
-                <div id = "comment" class="row">
-                    <label for="comment">Nombre</label><br />
-                    <input id="comment" class="input" name="nombre" type="text" value="" size="30" /><br />
+                <div class="single-grid">
+                    <img src="{{article.img}}" alt=""/>
+                    <p> {{article.content}}  </p>
                 </div>
-                <div id = "comment" class="row">
-                    <label for="comment">Comentario</label><br />
-                    <input id="comment" class="input" name="comentario" type="text" value="" size="30" /><br />
+
+                <ul class="comment-list">
+                    <h5 class="post-author_head">Written by {{article.author}}</h5>
+                    <li><img src="{{article.imgauthor}}" class="img-responsive" alt="">
+                        <div class="clearfix"></div>
+                    </li>
+                </ul>
+
+                <div class = "commentZone">
+                    {{#comments}}
+                    <div id = "commentBox">
+                     <div> <a id = "commentUser"> {{name}} </a> <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a> <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a></div>
+                        <div id = "commentText">
+                        <p id = "commentText">{{comment}}</p>
+                        </div>
+                    </div>
+                    {{/comments}}
                 </div>
-                <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
-            </form>
 
-        </div>
+                <h3>Deja un comentario</h3>
+                <form id="commentForm" action="/courses/newComment/{{article._id}}" method="POST">
 
-        <div class="col-md-4 content-right">
-            <div class="recent">
-                <h3>ACCIONES</h3>
-                <ul>
-                    <li><a href="/post/ultimo">Ultimo Post</a></li>
-                    <li><a href="/newArticulo">Nuevo Post</a></li>
-                </ul>
+                    <div id = "input" class="row">
+                        <label for="comment">Nombre</label><br />
+                        <input id="comment" class="input" name="name" type="text" value="" size="30" /><br />
+                    </div>
+                    <div id = "input" class="row">
+                        <label for="comment">Comentario</label><br />
+                        <input id="comment" class="input" name="comment" type="text" value="" size="30" /><br />
+                    </div>
+                    <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
+                </form>
+
             </div>
-            <div class="comments">
-                <h3>RECENT COMMENTS</h3>
-                <ul>
-                    <li><a href="#">No hay comentarios</a> on <a href="#">Hello World!</a></li>
-                </ul>
+
+            <div class="col-md-4 content-right">
+                <div class="recent">
+                    <h3>TERCER AÑO 'A'</h3>
+                    <ul>
+                        <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
+                        <li><a href="#">Nuevo Topic</a></li>
+                        <li><a href="#">Notas Alumnos</a></li>
+                        <li><a href="#">Faltas Alumnos</a></li>
+                        <li><a href="#">Calendario Académico</a></li>
+                    </ul>
+                </div>
+                <div class="recent">
+                    <h3>MATERIAS</h3>
+                    <ul>
+                        <li><a href="#">Matemáticas</a></li>
+                        <li><a href="#">Literatura</a></li>
+                        <li><a href="#">Inglés</a></li>
+                        <li><a href="#">Historia</a></li>
+                        <li><a href="#">Ciencias Sociales</a></li>
+                        <li><a href="#">Ciencias Naturales</a></li>
+                        <li><a href="#">Física</a></li>
+                        <li><a href="#">Programación</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+                <div class="archives">
+                    <h3>TAREAS</h3>
+                    <ul>
+                        <li><a href="#">Completadas (10)</a></li>
+                        <li><a href="#">No completadas (200)</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>
-            <div class="archives">
-                <h3>ARCHIVES</h3>
-                <ul>
-                    <li><a href="#">Diciembre 2016</a></li>
-                </ul>
-            </div>
-            <div class="categories">
-                <h3>CATEGORIES</h3>
-                <ul>
-                    <li><a href="#">Pagina Principal</a></li>
-                </ul>
-            </div>
-            <div class="clearfix"></div>
         </div>
-        <div class="clearfix"></div>
     </div>
 </div>
-</div>
-<!---->
+
 <div class="footer">
     <div class="container">
-        <p>Copyrights © 2015 Blog All rights reserved | Template by <a href="http://w3layouts.com/">W3layouts</a></p>
+        <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
     </div>
 </div>
-
-
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
