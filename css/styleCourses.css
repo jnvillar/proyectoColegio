@@ -68,7 +68,10 @@ position:relative;
 #input{
   margin-top: 2%;
 }
-
+#deleteComment{
+  float: right;
+  margin-right: 1%;
+}
 
 #commentLike{
   float: right;
@@ -76,7 +79,7 @@ position:relative;
 }
 
 #commentDislike{
-  margin-left: 0%;
+  margin-right: 1%;
   float: right;
 }
 

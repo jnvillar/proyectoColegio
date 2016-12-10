@@ -11,6 +11,7 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript" src="js/move-top.js"></script>
     <script type="text/javascript" src="js/easing.js"></script>
     <script type="text/javascript">
@@ -70,10 +71,16 @@
                     </li>
                 </ul>
 
+
+
                 <div class = "commentZone">
                     {{#comments}}
                     <div id = "commentBox">
-                     <div> <a id = "commentUser"> {{name}} </a> <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a> <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a></div>
+                        <div>   <a id = "commentUser"> {{name}}</a>
+                                <button id = "deleteComment"  ng-show={{user.name}}=={{name}} onclick="window.location.href='../courses/borrarComentario/{{_id}}/{{article._id}}'" > Borrar </button>
+                                <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a>
+                                <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a>
+                        </div>
                         <div id = "commentText">
                         <p id = "commentText">{{comment}}</p>
                         </div>
@@ -83,11 +90,6 @@
 
                 <h3>Deja un comentario</h3>
                 <form id="commentForm" action="/courses/newComment/{{article._id}}" method="POST">
-
-                    <div id = "input" class="row">
-                        <label for="comment">Nombre</label><br />
-                        <input id="comment" class="input" name="name" type="text" value="" size="30" /><br />
-                    </div>
                     <div id = "input" class="row">
                         <label for="comment">Comentario</label><br />
                         <input id="comment" class="input" name="comment" type="text" value="" size="30" /><br />
@@ -102,6 +104,8 @@
                     <h3>TERCER AÑO 'A'</h3>
                     <ul>
                         <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
+                        <li><a href="../courses/borrarArticulo/{{article._id}}">Borrar Articulo</a></li>
+                        <li><a href="../courses/logout">Cerrar Sesión</a></li>
                         <li><a href="#">Nuevo Topic</a></li>
                         <li><a href="#">Notas Alumnos</a></li>
                         <li><a href="#">Faltas Alumnos</a></li>

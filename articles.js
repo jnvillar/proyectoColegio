@@ -20,5 +20,16 @@ module.exports = {
     findArticle: function (id) {
         return articles.find({_id:id});
     },
+
+    deleteArticle: function(id){
+        articles.findOne({_id: id}, function (err, article) {
+            article.remove(function (err) {
+                if (err) {
+                    console.error('Error al borrar Articulo');
+                }
+            });
+        });
+
+    }
 };
 
