@@ -10,7 +10,7 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
-    <script src="http:////cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/move-top.js"></script>
     <script type="text/javascript" src="../js/easing.js"></script>
@@ -53,60 +53,25 @@
         </script>
     </div>
 </div>
+
 <div class="content">
     <div class="container">
         <div class="content-grids">
-            <div class="col-md-8 content-main">
-                <div class="content-grid">
+            <div class="col-md-8 single-main">
 
-                    <form id="articleForm" action=../courses/nuevoPostMateria/{{subject._id}}" method="POST">
+                <p>{{post.content}}</p>
 
-                        <div id="input">
-                            <label for="titulo">Titulo Articulo:</label><br />
-                            <input id="titulo" class="input" name="title" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="resumen">Resumen del Articulo:</label><br />
-                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="contenido">Contenido del Articulo:</label><br />
-                            <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="imagen">Url Imagen:</label><br />
-                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="autor">Autor:</label><br />
-                            <input id="autor" class="input" name="author" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="imgautor">Imagen Autor:</label><br />
-                            <input id="imgautor"  data-validation="url" class="input" name="imgauthor" type="text" value="" size="30"/><br />
-                        </div>
-
-                        <input id="submit_button" type="submit" value="Mandar Articulo" />
-
-                    </form>
-                </div>
-            </div>
             <div class="col-md-4 content-right">
                 <div class="recent">
                     <h3>{{user.year}}</h3>
-                    <ul>
-                        <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
-                        <li><a href="../courses/logout">Cerrar Sesión</a></li>
-                        <li><a href="#">Nuevo Topic</a></li>
-                        <li><a href="#">Notas Alumnos</a></li>
-                        <li><a href="#">Faltas Alumnos</a></li>
-                        <li><a href="#">Calendario Académico</a></li>
-                    </ul>
+                        <ul>
+                            <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
+                            <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                            <li><a href="#">Nuevo Topic</a></li>
+                            <li><a href="#">Notas Alumnos</a></li>
+                            <li><a href="#">Faltas Alumnos</a></li>
+                            <li><a href="#">Calendario Académico</a></li>
+                        </ul>
 
                 </div>
                 <div class="recent">
@@ -134,7 +99,6 @@
 
 <div class="footer">
     <div class="container">
-        <p>Copyrights © 2016 <a href="{{page.businessPage}}">{{page.businessName}}</a></p>
+        <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
     </div>
 </div>
-

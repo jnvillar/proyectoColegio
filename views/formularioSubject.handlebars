@@ -59,39 +59,31 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
-                    <form id="articleForm" action=../courses/nuevoPostMateria/{{subject._id}}" method="POST">
+
+
+                    <form id="articleForm" action="../nuevoPostMateria/{{id}}" method="POST">
 
                         <div id="input">
-                            <label for="titulo">Titulo Articulo:</label><br />
-                            <input id="titulo" class="input" name="title" type="text" value="" size="30" /><br />
+                            <label for="titulo">Titulo Post:</label><br />
+                            <input id="titulo" class="input" name="name" type="text" value="" size="30" /><br />
                         </div>
 
                         <div id="input">
-                            <label for="resumen">Resumen del Articulo:</label><br />
-                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="contenido">Contenido del Articulo:</label><br />
+                            <label for="contenido">Contenido del Post:</label><br />
                             <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
                         </div>
 
                         <div id="input">
-                            <label for="imagen">Url Imagen:</label><br />
-                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
+                            <label for="imagen">Url Imagen: (opcional)</label><br />
+                            <input id="imagen" class="input" name="imgs" type="text" value="" size="30" /><br />
                         </div>
 
                         <div id="input">
-                            <label for="autor">Autor:</label><br />
-                            <input id="autor" class="input" name="author" type="text" value="" size="30" /><br />
+                            <label for="autor">Links: (opcional)</label><br />
+                            <input id="autor" class="input" name="links" type="text" value="" size="30" /><br />
                         </div>
 
-                        <div id="input">
-                            <label for="imgautor">Imagen Autor:</label><br />
-                            <input id="imgautor"  data-validation="url" class="input" name="imgauthor" type="text" value="" size="30"/><br />
-                        </div>
-
-                        <input id="submit_button" type="submit" value="Mandar Articulo" />
+                        <input id="submit_button" type="submit" value="Mandar Post" />
 
                     </form>
                 </div>

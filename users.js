@@ -9,9 +9,8 @@ module.exports = {
 
 
     start: function(db,passport){
-        SchemUsers = db.Schema({name: String, password: String, admin: Boolean});
+        SchemUsers = db.Schema({name: String, password: String, admin: Boolean, year: String});
         users =  db.model('users', SchemUsers);
-
 
         passport.use(new LocalStrategy({usernameField:'name',passwordField: 'pass'},
             function(name, pass, cb) {
@@ -35,8 +34,8 @@ module.exports = {
         });
     },
 
-    createUser: function(name,pass,admin) {
-        var user = new users({name: name,password: pass,admin: admin});
+    createUser: function(name,pass,admin,year) {
+        var user = new users({name: name,password: pass,admin: admin, year: year});
         user.save(function (err) {
             if(err) console.log("Error saving user");
             else {console.log("User saved")}

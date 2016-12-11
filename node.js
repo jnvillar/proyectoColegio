@@ -4,8 +4,6 @@ var hbs = exphbs.create({
     // Specify helpers which are only registered on this instance.
     helpers: {
         equal: function (lvalue, rvalue, options) {
-            console.log(lvalue);
-            console.log(rvalue);
             if (lvalue != rvalue) {
                 return options.inverse(this);
             } else {
@@ -14,54 +12,46 @@ var hbs = exphbs.create({
         }
     }
 });
-
-var Promise = require("bluebird");
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/prueba');
-var db = mongoose.connection;
 var passport = require('passport');
 var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser  = require('body-parser');
 var flash   = require('connect-flash');
 var methodOverride = require('method-override');
+
+
 var funciones = require('./colegio');
 var school = funciones.school();
 var page = funciones.page();
-
 var articleManager = require('./articles');
 articleManager.start(mongoose);
-
 var commentsManager = require('./comments');
 commentsManager.start(mongoose);
-
+var subjectsManager = require('./subjects');
+subjectsManager.start(mongoose);
 var users = require('./users');
 users.start(mongoose,passport);
-//users.createUser('b','b',false);
+
+//users.createUser('alu','alu',false,"tercero");
+var aux=[];
+var s = {};s.name = "matematica"; s.id = "2"; s.content = "esto es mate"; s.img = ""; s.profesor = "gonzalez"; s.imgProfesor= ""; s.year="tercero";
+aux.push(s);
+//subjectsManager.createSubjects("tercero",aux);
 
 var http = require("http");
 var url = require("url");
-var mu = require('mu2');
 var fs = require('fs');
 var express = require("express");
 var app = express();
 var _ = require('underscore');
 var request = require('request');
-var flash    = require('connect-flash');
-
-
 body = require('body-parser');
-mu.root = __dirname + '/'
-
-
-
 app.use(body.json());
-app.use(body.urlencoded({       // to support URL-encoded bodies
+app.use(body.urlencoded({
     extended: true
 }));
-
-
-
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.env.PORT || 3000);
@@ -70,16 +60,12 @@ var options = { dotfiles: 'ignore', etag: false,
     index: false
 };
 app.use(express.static(path.join(__dirname, 'public') , options  ));
-
-
-
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(flash());
-
-app.use(session({ secret: 'keyboard cat', maxAge:1 }));
+app.use(session({ secret: 'keyboard cat', cookie:{maxAge:null}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -87,10 +73,7 @@ app.use(passport.session());
 
 
 app.get('/', function (req, res) {
-    mu.clearCache();
     res.render('indexMain',{school:school,page:page});
-    //var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: page});
-    //stream.pipe(res);
 });
 
 app.get('/courses/logout',function(req,res){
@@ -123,12 +106,12 @@ app.post('/courses/logIn', passport.authenticate('local',{
 
 app.get('/courses', function (req, res) {
     if(req.user) {
-        mu.clearCache();
         var articles = articleManager.getArticles();
-        articles.then(function (result) {
-            res.render('indexCourses',{school:school,articles:result.reverse(),page:page});
-            //var stream = mu.compileAndRender('courses/index.html', {page: page,chool: school articles: result.reverse()});
-            //stream.pipe(res);
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        articles.then(function (articles) {
+            userSubjects.then(function (subjects) {
+                res.render('indexCourses',{school:school,articles:articles.reverse(),page:page,subjects:subjects.subjects,user:req.user});
+            });
         });
     }else{
         res.redirect('../courses/logIn');
@@ -137,16 +120,17 @@ app.get('/courses', function (req, res) {
 
 app.get('/article/:id', function (req, res) {
     if(req.user){
-        //mu.clearCache();
         var id = req.params.id;
         var comments = commentsManager.getComments(id);
         var article = articleManager.findArticle(id);
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
         article.then(function (article) {
             comments.then(function (comments) {
-                res.render('single',{page: page,school: school, article: article[0],
-                    comments: comments, user: req.user});
-                //var stream = mu.compileAndRender('courses/single.html',{page: page,school: school, article: article[0],comments: comments, user: req.user});
-                //stream.pipe(res);
+                userSubjects.then(function (subjects) {
+                    res.render('single',{page: page,school: school, article: article[0],
+                        comments: comments, user: req.user,subjects: subjects.subjects});
+                })
+
             });
         });
     }else{
@@ -154,6 +138,73 @@ app.get('/article/:id', function (req, res) {
     }
 
 });
+
+app.get('/subject/:id', function (req, res) {
+    if(req.user){
+        var id = req.params.id;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            var subject = subjectsManager.findSubjectInSubjects(id,subjects.subjects);
+            var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
+            subjectPosts.then(function (posts) {
+                res.render('subject',{page: page,school: school, posts: posts.posts,user:req.user,userSubjects: subjects.subjects,subject:subject});
+            });
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+
+});
+
+
+app.get('/subjectPost/:ids/:idp', function (req, res) {
+    if(req.user){
+        var ids = req.params.ids;
+        var idp = req.params.idp;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            var subject = subjectsManager.findSubjectInSubjects(ids,subjects.subjects);
+            var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
+            subjectPosts.then(function (posts) {
+                var post = subjectsManager.findOnePostInPost(idp,posts.posts);
+                res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
+                // res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
+            });
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
+app.get('/nuevoPostMateria/:id', function (req, res) {
+    if(req.user){
+        var id = req.params.id;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            res.render('formularioSubject',{page: page, school: school,id:id,userSubjects: subjects.subjects});
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+
+});
+
+app.post('/nuevoPostMateria/:id', function (req, res) {
+    if(req.user){
+        var id = req.params.id;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            var subject = subjectsManager.findSubjectInSubjects(id,subjects.subjects);
+
+            subjectsManager.newPost(req.user,req.body,subject.year,subject.name);
+        });
+        res.redirect('../subject/'+id);
+    }else{
+        res.redirect('../courses/logIn');
+    }
+
+});
+
 
 app.get('/courses/borrarArticulo/:id', function (req, res) {
     if(req.user) {
@@ -169,10 +220,10 @@ app.get('/courses/borrarArticulo/:id', function (req, res) {
 
 app.get('/courses/nuevoArticulo', function (req, res) {
     if(req.user) {
-       // mu.clearCache();
-        res.render('formularioArticulo', {page: page, school: school});
-        //var stream = mu.compileAndRender('courses/formularioArticulo.html', {page: page, school: school});
-        //stream.pipe(res);
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            res.render('formularioArticulo',{page: page, school: school,userSubjects: subjects.subjects, user: req.user});
+        });
     }else{
         res.redirect('../courses/logIn');
     }
@@ -189,10 +240,8 @@ app.post("/courses/postArticulo",function(req,res){
 
 app.post("/courses/newComment/:id",function(req,res){
     if(req.user) {
-        mu.clearCache();
+        //mu.clearCache();
         var id = req.params.id;
-        //console.log(req.body);
-        //console.log(req.user);
         req.body.name = req.user.name;
         req.body.postId = id;
         req.body.likes = 0;
@@ -222,7 +271,7 @@ app.get('/courses/borrarComentario/:idC/:idP', function (req, res) {
 
 app.get("/courses/voteComment/:idC/:vote/:idP",function(req,res){
     if(req.user) {
-        mu.clearCache();
+        //mu.clearCache();
         var idC = req.params.idC;
         var type = req.params.vote;
         var idP = req.params.idP;
@@ -236,7 +285,7 @@ app.get("/courses/voteComment/:idC/:vote/:idP",function(req,res){
 
 
 app.post('/mandarEmail',function (req,res) {
-    mu.clearCache();
+    //mu.clearCache();
     var stream = mu.compileAndRender('mainpage/index.html',{school: school,page: page});
     stream.pipe(res);
 });

@@ -10,9 +10,10 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/move-top.js"></script>
-    <script type="text/javascript" src="js/easing.js"></script>
+    <script type="text/javascript" src="../js/move-top.js"></script>
+    <script type="text/javascript" src="../js/easing.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             $(".scroll").click(function(event){
@@ -39,8 +40,7 @@
             <span class="menu"> </span>
             <ul>
                 <li><a href="../">HOME</a></li>
-                <li class="active"><a href="#">CURSOS</a></li>
-                <li><a href="contact.html">CONTACTO</a></li>
+                <li class="active"><a href="../courses">CURSOS</a></li>
                 <div class="clearfix"> </div>
             </ul>
         </div>
@@ -54,66 +54,38 @@
     </div>
 </div>
 
-
-<div class="single">
+<div class="content">
     <div class="container">
-        <div class="col-md-8 single-main">
-            <div class="single-grid">
-                <img src="{{img}}" alt=""/>
+        <div class="content-grids">
+            <div class="col-md-8 single-main">
 
-                <p> {{content}} </p>
-            </div>
-            <ul class="comment-list">
-                <h5 class="post-author_head">Written by {{author}}</h5>
-                <li><img src="{{imgauthor}}" class="img-responsive" alt="">
-                    <div class="clearfix"></div>
-                </li>
-            </ul>
+                {{#posts}}
 
-            {{#listcomentarios}}
-            <p id = "usuario">Usuario: {{nombre}}</p>
-            <div id = "comentario">
-                <p id = "comentariotexto">{{comentario}}</p>
-            </div>
-            {{/listcomentarios}}
-
-            <form id="contact_form" action="/newComment/{{_id}}" method="POST">
-                <h3>Leave a comment</h3>
-                <div id = "comment" class="row">
-                    <label for="comment">Nombre</label><br />
-                    <input id="comment" class="input" name="nombre" type="text" value="" size="30" /><br />
+                <div class="single-grid">
+                    <a href="../subjectPost/{{../subject._id}}/{{_id}}"> {{name}}  </a>
                 </div>
-                <div id = "comment" class="row">
-                    <label for="comment">Comentario</label><br />
-                    <input id="comment" class="input" name="comentario" type="text" value="" size="30" /><br />
-                </div>
-                <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
-            </form>
 
-        </div>
-            </div>
+                {{/posts}}
+
             <div class="col-md-4 content-right">
                 <div class="recent">
-                    <h3>TERCER AÑO 'A'</h3>
-                    <ul>
-                        <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
-                        <li><a href="#">Nuevo Topic</a></li>
-                        <li><a href="#">Notas Alumnos</a></li>
-                        <li><a href="#">Faltas Alumnos</a></li>
-                        <li><a href="#">Calendario Académico</a></li>
-                    </ul>
+                    <h3>{{user.year}}</h3>
+                        <ul>
+                            <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
+                            <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                            <li><a href="#">Nuevo Topic</a></li>
+                            <li><a href="#">Notas Alumnos</a></li>
+                            <li><a href="#">Faltas Alumnos</a></li>
+                            <li><a href="#">Calendario Académico</a></li>
+                        </ul>
+
                 </div>
-                <div class="comments">
+                <div class="recent">
                     <h3>MATERIAS</h3>
                     <ul>
-                        <li><a href="#">Matemáticas</a></li>
-                        <li><a href="#">Literatura</a></li>
-                        <li><a href="#">Inglés</a></li>
-                        <li><a href="#">Historia</a></li>
-                        <li><a href="#">Ciencias Sociales</a></li>
-                        <li><a href="#">Ciencias Naturales</a></li>
-                        <li><a href="#">Física</a></li>
-                        <li><a href="#">Programación</a></li>
+                        {{#userSubjects}}
+                            <li><a href="../subject/{{_id}}">{{name}}</a></li>
+                        {{/userSubjects}}
                     </ul>
                 </div>
                 <div class="clearfix"></div>
