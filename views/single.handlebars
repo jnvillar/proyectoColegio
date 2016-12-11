@@ -72,13 +72,14 @@
                 </ul>
 
 
-
                 <div class = "commentZone">
                     {{^user.admin}}
-                        {{#comments}}
+                        {{#each comments}}
                         <div id = "commentBox">
                             <div>   <a id = "commentUser"> {{name}}</a>
-                                    <a id = "commentDislike"  href="../courses/borrarComentario/{{_id}}/{{article._id}}">Borrar</a>
+                                    {{#equal ../user.name name}}
+                                    <a id = "commentDislike"  href="../courses/borrarComentario/{{_id}}/{{article_id}}">Borrar</a>
+                                    {{/equal}}
                                     <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a>
                                     <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a>
                             </div>
@@ -86,24 +87,24 @@
                             <p id = "commentText">{{comment}}</p>
                             </div>
                         </div>
-                        {{/comments}}
+                        {{/each}}
                     {{/user.admin}}
                 </div>
 
                 <div class = "commentZone">
                     {{#user.admin}}
-                        {{#comments}}
+                        {{#each comments}}
                         <div id = "commentBox">
                             <div>   <a id = "commentUser"> {{name}}</a>
-                                <a id = "commentDislike" href="../courses/borrarComentario/{{_id}}/{{article._id}}">Borrar</a>
-                                <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a>
-                                <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a>
+                                <a id = "commentDislike" href="../courses/borrarComentario/{{_id}}/{{../article._id}}">Borrar</a>
+                                <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{../article._id}}">Dislikes: {{dislikes}}</a>
+                                <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{../article._id}}"> Likes: {{likes}}</a>
                             </div>
                             <div id = "commentText">
                                 <p id = "commentText">{{comment}}</p>
                             </div>
                         </div>
-                        {{/comments}}
+                        {{/each}}
                     {{/user.admin}}
                 </div>
 

@@ -10,7 +10,7 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http:////cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/move-top.js"></script>
     <script type="text/javascript" src="js/easing.js"></script>
@@ -53,100 +53,61 @@
         </script>
     </div>
 </div>
-
 <div class="content">
     <div class="container">
         <div class="content-grids">
-            <div class="col-md-8 single-main">
+            <div class="col-md-8 content-main">
+                <div class="content-grid">
 
-                <div class="single-grid">
-                    <img src="{{article.img}}" alt=""/>
-                    <p> {{article.content}}  </p>
-                </div>
+                    <form id="articleForm" action="../courses/postArticulo" method="POST">
 
-                <ul class="comment-list">
-                    <h5 class="post-author_head">Written by {{article.author}}</h5>
-                    <li><img src="{{article.imgauthor}}" class="img-responsive" alt="">
-                        <div class="clearfix"></div>
-                    </li>
-                </ul>
-
-
-
-                <div class = "commentZone">
-                    {{^user.admin}}
-                        {{#comments}}
-                        <div id = "commentBox">
-                            <div>   <a id = "commentUser"> {{name}}</a>
-                                    <a id = "commentDislike"  href="../courses/borrarComentario/{{_id}}/{{article._id}}">Borrar</a>
-                                    <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a>
-                                    <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a>
-                            </div>
-                            <div id = "commentText">
-                            <p id = "commentText">{{comment}}</p>
-                            </div>
+                        <div id="input">
+                            <label for="titulo">Titulo Articulo:</label><br />
+                            <input id="titulo" class="input" name="title" type="text" value="" size="30" /><br />
                         </div>
-                        {{/comments}}
-                    {{/user.admin}}
-                </div>
 
-                <div class = "commentZone">
-                    {{#user.admin}}
-                        {{#comments}}
-                        <div id = "commentBox">
-                            <div>   <a id = "commentUser"> {{name}}</a>
-                                <a id = "commentDislike" href="../courses/borrarComentario/{{_id}}/{{article._id}}">Borrar</a>
-                                <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{article._id}}">Dislikes: {{dislikes}}</a>
-                                <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{article._id}}"> Likes: {{likes}}</a>
-                            </div>
-                            <div id = "commentText">
-                                <p id = "commentText">{{comment}}</p>
-                            </div>
+                        <div id="input">
+                            <label for="resumen">Resumen del Articulo:</label><br />
+                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
                         </div>
-                        {{/comments}}
-                    {{/user.admin}}
+
+                        <div id="input">
+                            <label for="contenido">Contenido del Articulo:</label><br />
+                            <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
+                        </div>
+
+                        <div id="input">
+                            <label for="imagen">Url Imagen:</label><br />
+                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
+                        </div>
+
+                        <div id="input">
+                            <label for="autor">Autor:</label><br />
+                            <input id="autor" class="input" name="author" type="text" value="" size="30" /><br />
+                        </div>
+
+                        <div id="input">
+                            <label for="imgautor">Imagen Autor:</label><br />
+                            <input id="imgautor"  data-validation="url" class="input" name="imgauthor" type="text" value="" size="30"/><br />
+                        </div>
+
+                        <input id="submit_button" type="submit" value="Mandar Articulo" />
+
+                    </form>
                 </div>
-
-                <h3>Deja un comentario</h3>
-                <form id="commentForm" action="/courses/newComment/{{article._id}}" method="POST">
-                    <div id = "input" class="row">
-                        <label for="comment">Comentario</label><br />
-                        <input id="comment" class="input" name="comment" type="text" value="" size="30" /><br />
-                    </div>
-                    <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
-                </form>
-
             </div>
-
             <div class="col-md-4 content-right">
                 <div class="recent">
                     <h3>TERCER AÑO 'A'</h3>
-
-                    {{#user.admin}}
-                        <ul>
-                            <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
-                            <li><a href="../courses/borrarArticulo/{{article._id}}">Borrar Articulo</a></li>
-                            <li><a href="../courses/logout">Cerrar Sesión</a></li>
-                            <li><a href="#">Nuevo Topic</a></li>
-                            <li><a href="#">Notas Alumnos</a></li>
-                            <li><a href="#">Faltas Alumnos</a></li>
-                            <li><a href="#">Calendario Académico</a></li>
-                        </ul>
-                    {{/user.admin}}
-
-                    {{^user.admin}}
                     <ul>
                         <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
-                        <li><a href="../courses/logout">Cerrar Sesión</a></li>
                         <li><a href="#">Nuevo Topic</a></li>
                         <li><a href="#">Notas Alumnos</a></li>
                         <li><a href="#">Faltas Alumnos</a></li>
                         <li><a href="#">Calendario Académico</a></li>
                     </ul>
-                    {{/user.admin}}
-
                 </div>
-                <div class="recent">
+                <div class="comments">
                     <h3>MATERIAS</h3>
                     <ul>
                         <li><a href="#">Matemáticas</a></li>
@@ -176,6 +137,7 @@
 
 <div class="footer">
     <div class="container">
-        <p>© 2016 <a href="{{page.businessPage}}" target="_blank">{{page.businessName}}</a> </p>
+        <p>Copyrights © 2016 <a href="{{page.businessPage}}">{{page.businessName}}</a></p>
     </div>
 </div>
+
