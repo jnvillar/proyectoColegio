@@ -160,10 +160,6 @@ app.get('/subject/:id', function (req, res) {
 
 app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
     if(req.user){
-
-        console.log(req.url);
-
-
         var idSubject = req.params.idSubject;
         var idPost = req.params.idPost;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
