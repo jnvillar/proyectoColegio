@@ -232,6 +232,7 @@ app.get('/courses/nuevoArticulo', function (req, res) {
 
 app.post("/courses/nuevoArticulo",function(req,res){
     if(req.user) {
+        console.log(req.body);
         articleManager.newArticle(req.body);
         res.redirect('../courses');
     }else{
