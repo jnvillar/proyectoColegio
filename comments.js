@@ -32,20 +32,20 @@ module.exports = {
 
     voteComment: function (id,type,voter) {
         if (type == 0) {
-            comments.findOne({_id: id,votersPos:voter}, function (err, user) {
-                if(user) {
-                    user.likes = user.likes - 1;
-                    user.votersPos.remove(voter);
-                    user.save(function (err) {
+            comments.findOne({_id: id,votersPos:voter}, function (err, com) {
+                if(com) {
+                    com.likes = com.likes - 1;
+                    com.votersPos.remove(voter);
+                    com.save(function (err) {
                         if (err) {
                             console.error('Error al dar like!');
                         }
                     });
                 }else{
-                    comments.findOne({_id: id}, function (err, user) {
-                        user.likes = user.likes + 1;
-                        user.votersPos.push(voter);
-                        user.save(function (err) {
+                    comments.findOne({_id: id}, function (err, com) {
+                        com.likes = com.likes + 1;
+                        com.votersPos.push(voter);
+                        com.save(function (err) {
                             if (err) {
                                 console.error('Error al dar dislike!');
                             }
@@ -54,20 +54,20 @@ module.exports = {
                 }
             });
         } else {
-            comments.findOne({_id: id,votersNeg:voter}, function (err, user) {
-                if(user) {
-                    user.dislikes = user.dislikes - 1;
-                    user.votersNeg.remove(voter);
-                    user.save(function (err) {
+            comments.findOne({_id: id,votersNeg:voter}, function (err, com) {
+                if(com) {
+                    com.dislikes = com.dislikes - 1;
+                    com.votersNeg.remove(voter);
+                    com.save(function (err) {
                         if (err) {
                             console.error('Error al dar like!');
                         }
                     });
                 }else{
-                    comments.findOne({_id: id}, function (err, user) {
-                        user.dislikes = user.dislikes + 1;
-                        user.votersNeg.push(voter);
-                        user.save(function (err) {
+                    comments.findOne({_id: id}, function (err, com) {
+                        com.dislikes = com.dislikes + 1;
+                        com.votersNeg.push(voter);
+                        com.save(function (err) {
                             if (err) {
                                 console.error('Error al dar dislike!');
                             }

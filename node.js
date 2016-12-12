@@ -167,7 +167,6 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
             var subject = subjectsManager.findSubjectInSubjects(idSubject,subjects.subjects);
             var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
             subjectPosts.then(function (posts) {
-
                 var post = subjectsManager.findOnePostInPost(idPost,posts.posts);
                 res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
                 // res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
@@ -243,7 +242,6 @@ app.post("/courses/nuevoArticulo",function(req,res){
 
 app.post("/courses/newComment/:id",function(req,res){
     if(req.user) {
-        //mu.clearCache();
         var id = req.params.id;
         req.body.name = req.user.name;
         req.body.postId = id;
@@ -261,9 +259,9 @@ app.post("/courses/newComment/:id",function(req,res){
 
 app.get('/courses/borrarComentario/:idC/:idP', function (req, res) {
     if(req.user) {
-        //mu.clearCache();
         var idc = req.params.idC;
         var idp = req.params.idP;
+        console.log(idc);
         commentsManager.deleteComment(idc);
         res.redirect('/article/'+idp);
     }else{
@@ -274,12 +272,13 @@ app.get('/courses/borrarComentario/:idC/:idP', function (req, res) {
 
 app.get("/courses/voteComment/:idC/:vote/:idP",function(req,res){
     if(req.user) {
-        //mu.clearCache();
+
         var idC = req.params.idC;
         var type = req.params.vote;
         var idP = req.params.idP;
         var voter = req.user.name;
-        commentsManager.voteComment(idC, type);
+
+        commentsManager.voteComment(idC, type,voter);
         res.redirect('/article/' + idP);
     }else{
         res.redirect('../courses/logIn');
