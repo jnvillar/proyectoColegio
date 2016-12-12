@@ -30,7 +30,7 @@ module.exports = {
             links: [String]
         });
 
-        SchemPosts = db.Schema({ year: String,
+        SchemPosts = db.Schema({year: String,
                                 subjectName: String,
                                 posts: [SchemPost]
 
@@ -66,7 +66,7 @@ module.exports = {
     },
 
     getSubjectPosts: function (year,name) {
-      return postSubject.findOne({year:year,subjectName:name});
+        return postSubject.findOne({year:year,subjectName:name});
     },
 
     findOnePostInPost: function(idP,buscar){

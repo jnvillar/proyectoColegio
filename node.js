@@ -158,16 +158,21 @@ app.get('/subject/:id', function (req, res) {
 });
 
 
-app.get('/subjectPost/:ids/:idp', function (req, res) {
+app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
     if(req.user){
-        var ids = req.params.ids;
-        var idp = req.params.idp;
+
+        console.log(req.url);
+
+
+        var idSubject = req.params.idSubject;
+        var idPost = req.params.idPost;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
-            var subject = subjectsManager.findSubjectInSubjects(ids,subjects.subjects);
+            var subject = subjectsManager.findSubjectInSubjects(idSubject,subjects.subjects);
             var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
             subjectPosts.then(function (posts) {
-                var post = subjectsManager.findOnePostInPost(idp,posts.posts);
+
+                var post = subjectsManager.findOnePostInPost(idPost,posts.posts);
                 res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
                 // res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
             });
