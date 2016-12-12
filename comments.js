@@ -3,7 +3,13 @@ var comments;
 
 module.exports = {
     start: function (db) {
-        SchemComments = db.Schema({name:String,comment:String,postId:String,likes:Number,dislikes:Number,votersPos:[String],votersNeg:[String]});
+        SchemComments = db.Schema({name:String,
+            comment:String,
+            postId:String,
+            likes:Number,
+            dislikes:Number,
+            votersPos:[String],
+            votersNeg:[String]});
         comments = db.model('comment', SchemComments);
     },
 

@@ -13,6 +13,7 @@ var hbs = exphbs.create({
     }
 });
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/prueba');
 var passport = require('passport');
 var session  = require('express-session');
@@ -65,7 +66,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(flash());
-app.use(session({ secret: 'keyboard cat', cookie:{maxAge:null}}));
+app.use(session({ secret: 'keyboard cat',resave: false ,saveUninitialized:false,cookie:{maxAge:null}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -229,7 +230,7 @@ app.get('/courses/nuevoArticulo', function (req, res) {
     }
 });
 
-app.post("/courses/postArticulo",function(req,res){
+app.post("/courses/nuevoArticulo",function(req,res){
     if(req.user) {
         articleManager.newArticle(req.body);
         res.redirect('../courses');

@@ -3,7 +3,13 @@ var articles;
 
 module.exports = {
     start: function (db) {
-        SchemArticles = db.Schema({title:String,summary:String,content:String,img:String,author:String,imgAuthor:String});
+        SchemArticles = db.Schema({title:String,
+                                    summary:String,
+                                    content:String,
+                                    img:String,
+                                    author:String,
+                                    imgAuthor:String});
+
         articles = db.model('article', SchemArticles);
     },
 
