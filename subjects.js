@@ -25,9 +25,7 @@ module.exports = {
 
         SchemPost = db.Schema({
             name: String,
-            content: String,
-            imgs: [String],
-            links: [String]
+            content: String
         });
 
         SchemPosts = db.Schema({year: String,

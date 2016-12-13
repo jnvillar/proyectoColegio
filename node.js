@@ -36,7 +36,7 @@ var users = require('./users');
 users.start(mongoose,passport);
 
 //users.createUser('alu','alu',false,"tercero");
-//users.createUser('admin','admin',true,"tercero");
+//users.createUser('admin','admin',true,"tercero","");
 //var aux=[];
 //var s = {};s.name = "matematica"; s.content = "esto es mate"; s.img = ""; s.profesor = "gonzalez"; s.imgProfesor= ""; s.year="tercero";
 //aux.push(s);
@@ -145,6 +145,7 @@ app.get('/subject/:id', function (req, res) {
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}}
             var findSubject = subjectsManager.findSubject(id);
             findSubject.then(function (subject) {
                 var subject = _.find(subject.subjects, function(subject) {
@@ -214,6 +215,7 @@ app.get('/nuevoPostMateria/:id', function (req, res) {
 
 app.post('/nuevoPostMateria/:id', function (req, res) {
     if(req.user){
+
         var id = req.params.id;
         var findSubject = subjectsManager.findSubject(id);
         findSubject.then(function (subject) {
@@ -256,7 +258,10 @@ app.get('/courses/nuevoArticulo', function (req, res) {
 
 app.post("/courses/nuevoArticulo",function(req,res){
     if(req.user) {
-        console.log(req.body);
+
+        req.body.author = req.user.name;
+        req.body.imgAuthor = req.user.img;
+
         articleManager.newArticle(req.body);
         res.redirect('../courses');
     }else{

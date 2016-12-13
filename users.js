@@ -12,6 +12,7 @@ module.exports = {
         SchemUsers = db.Schema({name: String,
                                 password: String,
                                 admin: Boolean,
+                                img: String,
                                 year: String});
         users =  db.model('users', SchemUsers);
 
@@ -37,8 +38,8 @@ module.exports = {
         });
     },
 
-    createUser: function(name,pass,admin,year) {
-        var user = new users({name: name,password: pass,admin: admin, year: year});
+    createUser: function(name,pass,admin,year,img) {
+        var user = new users({name: name,password: pass,admin: admin, year: year,img: img});
         user.save(function (err) {
             if(err) console.log("Error saving user");
             else {console.log("User saved")}

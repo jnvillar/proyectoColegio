@@ -58,18 +58,25 @@
     </div>
 </div>
 
+
 <div class="content">
     <div class="container">
         <div class="content-grids">
             <div class="col-md-8 single-main">
 
-                <div id="subject_title">
-                    <p> {{post.name}}  </p>
+                <div class="single-grid">
+                    <img src="{{article.img}}" alt=""/>
+                    <p> {{{article.content}}}  </p>
                 </div>
 
-                <div class="content-grid">
-                <p>{{post.content}}</p>
+                <div class="single-grid">
+
+                        <p> {{post.name}}  </p>
+
+                        <p>{{{post.content}}}</p>
                 </div>
+
+
 
 
             <div class = "commentZone">

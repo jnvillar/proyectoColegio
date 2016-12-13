@@ -22,6 +22,7 @@
             });
         });
     </script>
+    <script src="../ckeditor/ckeditor.js"></script>
 
 </head>
 <body>
@@ -62,6 +63,7 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
+
                     <form id="articleForm" action="../courses/nuevoArticulo" method="POST">
 
                         <div id="input">
@@ -70,29 +72,21 @@
                         </div>
 
                         <div id="input">
-                            <label for="resumen">Resumen del Articulo:</label><br />
-                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
-                            <label for="contenido">Contenido del Articulo:</label><br />
-                            <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
-                        </div>
-
-                        <div id="input">
                             <label for="imagen">Url Imagen:</label><br />
                             <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
                         </div>
 
-                        <div id="input">
-                            <label for="autor">Autor:</label><br />
-                            <input id="autor" class="input" name="author" type="text" value="" size="30" /><br />
-                        </div>
 
                         <div id="input">
-                            <label for="imgautor">Imagen Autor:</label><br />
-                            <input id="imgautor"  data-validation="url" class="input" name="imgAuthor" type="text" value="" size="30"/><br />
+                            <label for="resumen">Resumen del Articulo:</label><br />
+                            <input id="resumen" class="input" name="summary" type="text" value="" size="30" /><br />
                         </div>
+
+                        <textarea name="content" id="editor1" rows="10" cols="80"></textarea>
+
+                        <script>
+                            CKEDITOR.replace( 'editor1' );
+                        </script>
 
                         <input id="submit_button" type="submit" value="Mandar Articulo" />
 
