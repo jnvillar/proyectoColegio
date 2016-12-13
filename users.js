@@ -9,7 +9,10 @@ module.exports = {
 
 
     start: function(db,passport){
-        SchemUsers = db.Schema({name: String, password: String, admin: Boolean, year: String});
+        SchemUsers = db.Schema({name: String,
+                                password: String,
+                                admin: Boolean,
+                                year: String});
         users =  db.model('users', SchemUsers);
 
         passport.use(new LocalStrategy({usernameField:'name',passwordField: 'pass'},

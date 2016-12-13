@@ -40,6 +40,9 @@
 				   <ul>
 						<li><a href="../">HOME</a></li>
 						<li class="active"><a href="#">CURSOS</a></li>
+                       {{#user.admin}}
+                           <li class="active"><a href="../courses/allSubjects">AÑOS</a></li>
+                       {{/user.admin}}
 						<div class="clearfix"> </div>
 				 </ul>
 			 </div>
@@ -58,34 +61,29 @@
 		 <div class="content-grids">
 			 <div class="col-md-8 content-main">
 				 <div class="content-grid">
-
 					 {{#articles}}
 					 <div class="content-grid-info">
-						 <img src= "{{img}}" alt=""/>
+
 						 <div class="post-info">
+                             <img  src= "{{img}}" alt="" >
 							 <h4><a href="../article/{{_id}}">{{title}}</a>  </h4>
 							 <p>{{summary}}</p>
 							 <a href="../article/{{_id}}"><span></span>Seguir leyendo</a>
 						 </div>
 					 </div>
 					 {{/articles}}
-
 				 </div>
 			  </div>
 			  <div class="col-md-4 content-right">
 				 <div class="recent">
-					 <h3>{{user.year}}</h3>
+					 <h3>Utilidades</h3>
 					 <ul>
 						 <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
 						 <li><a href="../courses/logout">Cerrar Sesión</a></li>
-						 <li><a href="#">Nuevo Topic</a></li>
-						 <li><a href="#">Notas Alumnos</a></li>
-						 <li><a href="#">Faltas Alumnos</a></li>
-						 <li><a href="#">Calendario Académico</a></li>
 					 </ul>
 				 </div>
 				 <div class="recent">
-                     <h3>MATERIAS</h3>
+                     <h3>{{user.year}}</h3>
                      <ul>
                          {{#subjects}}
                              <li><a href="../subject/{{_id}}">{{name}}</a></li>
@@ -93,14 +91,7 @@
                      </ul>
 				 </div>
 				 <div class="clearfix"></div>
-				 <div class="archives">
-					 <h3>TAREAS</h3>
-					 <ul>
-					 <li><a href="#">Completadas (10)</a></li>
-					 <li><a href="#">No completadas (200)</a></li>
-					 </ul>
-				 </div>
-				 <div class="clearfix"></div>
+
 			  </div>
 			  <div class="clearfix"></div>
 		  </div>

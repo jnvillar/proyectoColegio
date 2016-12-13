@@ -36,9 +36,10 @@ var users = require('./users');
 users.start(mongoose,passport);
 
 //users.createUser('alu','alu',false,"tercero");
-var aux=[];
-var s = {};s.name = "matematica"; s.id = "2"; s.content = "esto es mate"; s.img = ""; s.profesor = "gonzalez"; s.imgProfesor= ""; s.year="tercero";
-aux.push(s);
+//users.createUser('admin','admin',true,"tercero");
+//var aux=[];
+//var s = {};s.name = "matematica"; s.content = "esto es mate"; s.img = ""; s.profesor = "gonzalez"; s.imgProfesor= ""; s.year="tercero";
+//aux.push(s);
 //subjectsManager.createSubjects("tercero",aux);
 
 var http = require("http");
@@ -91,10 +92,7 @@ app.get('/courses/logIn',function(req,res) {
     if(req.user) {
         res.redirect('/courses');
     }else {
-        res.render('logIn',{page:page});
-        //mu.clearCache();
-        //var stream = mu.compileAndRender('courses/logIn.html', {page: page});
-        //stream.pipe(res);
+        res.render('logIn', {page: page});
     }
 });
 
@@ -111,6 +109,7 @@ app.get('/courses', function (req, res) {
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         articles.then(function (articles) {
             userSubjects.then(function (subjects) {
+                if(subjects==null){subjects={}};
                 res.render('indexCourses',{school:school,articles:articles.reverse(),page:page,subjects:subjects.subjects,user:req.user});
             });
         });
@@ -128,6 +127,7 @@ app.get('/article/:id', function (req, res) {
         article.then(function (article) {
             comments.then(function (comments) {
                 userSubjects.then(function (subjects) {
+                    if(subjects==null){subjects={}};
                     res.render('single',{page: page,school: school, article: article[0],
                         comments: comments, user: req.user,subjects: subjects.subjects});
                 })
@@ -145,10 +145,16 @@ app.get('/subject/:id', function (req, res) {
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
-            var subject = subjectsManager.findSubjectInSubjects(id,subjects.subjects);
-            var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
-            subjectPosts.then(function (posts) {
-                res.render('subject',{page: page,school: school, posts: posts.posts,user:req.user,userSubjects: subjects.subjects,subject:subject});
+            var findSubject = subjectsManager.findSubject(id);
+            findSubject.then(function (subject) {
+                var subject = _.find(subject.subjects, function(subject) {
+                    return subject['_id'] == id;
+                });
+
+                var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
+                subjectPosts.then(function (posts) {
+                    res.render('subject',{page: page,school: school, posts: posts.posts,user:req.user,userSubjects: subjects.subjects,subject:subject});
+                });
             });
         });
     }else{
@@ -162,14 +168,29 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
     if(req.user){
         var idSubject = req.params.idSubject;
         var idPost = req.params.idPost;
+        var findComments = commentsManager.getComments(idPost);
         var userSubjects = subjectsManager.getUserSubjects(req.user);
-        userSubjects.then(function (subjects) {
-            var subject = subjectsManager.findSubjectInSubjects(idSubject,subjects.subjects);
-            var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
-            subjectPosts.then(function (posts) {
-                var post = subjectsManager.findOnePostInPost(idPost,posts.posts);
-                res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
-                // res.render('subjectPost',{page: page,school: school, post: post,user:req.user,userSubjects: subjects.subjects,subject:subject});
+        findComments.then(function (comments) {
+            console.log(comments);
+            userSubjects.then(function (subjects) {
+                if(subjects==null){subjects={}}
+                var findSubject = subjectsManager.findSubject(idSubject);
+                findSubject.then(function (subject) {
+                    var subject = _.find(subject.subjects, function(subject) {
+                        return subject['_id'] == idSubject;
+                    });
+                    var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
+                    subjectPosts.then(function (posts) {
+                        var post = subjectsManager.findOnePostInPost(idPost,posts.posts);
+                        res.render('subjectPost',{  page: page,
+                                                    school: school,
+                                                    post: post,
+                                                    user:req.user,
+                                                    userSubjects: subjects.subjects,
+                                                    subject:subject,
+                                                    comments:comments});
+                    });
+                });
             });
         });
     }else{
@@ -182,6 +203,7 @@ app.get('/nuevoPostMateria/:id', function (req, res) {
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}};
             res.render('formularioSubject',{page: page, school: school,id:id,userSubjects: subjects.subjects});
         });
     }else{
@@ -193,13 +215,14 @@ app.get('/nuevoPostMateria/:id', function (req, res) {
 app.post('/nuevoPostMateria/:id', function (req, res) {
     if(req.user){
         var id = req.params.id;
-        var userSubjects = subjectsManager.getUserSubjects(req.user);
-        userSubjects.then(function (subjects) {
-            var subject = subjectsManager.findSubjectInSubjects(id,subjects.subjects);
-
+        var findSubject = subjectsManager.findSubject(id);
+        findSubject.then(function (subject) {
+            var subject = _.find(subject.subjects, function(subject) {
+                return subject['_id'] == id;
+            });
             subjectsManager.newPost(req.user,req.body,subject.year,subject.name);
+            res.redirect('../subject/'+id);
         });
-        res.redirect('../subject/'+id);
     }else{
         res.redirect('../courses/logIn');
     }
@@ -207,12 +230,12 @@ app.post('/nuevoPostMateria/:id', function (req, res) {
 });
 
 
-app.get('/courses/borrarArticulo/:id', function (req, res) {
+app.get('/borrarArticulo/:id', function (req, res) {
     if(req.user) {
         var id = req.params.id;
         articleManager.deleteArticle(id);
         commentsManager.deleteComments(id);
-        res.redirect('../');
+        res.redirect('../courses');
     }else{
         res.redirect('../courses/logIn');
     }
@@ -223,6 +246,7 @@ app.get('/courses/nuevoArticulo', function (req, res) {
     if(req.user) {
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}};
             res.render('formularioArticulo',{page: page, school: school,userSubjects: subjects.subjects, user: req.user});
         });
     }else{
@@ -240,8 +264,44 @@ app.post("/courses/nuevoArticulo",function(req,res){
     }
 });
 
-app.post("/courses/newComment/:id",function(req,res){
+app.get('/courses/allSubjects',function(req,res){
+    if(req.user && req.user.admin){
+        var getsubjects = subjectsManager.getSubjects();
+        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        getsubjects.then(function(subjects){
+            findUserSubjects.then(function(userSubjects){
+                if(userSubjects==null){userSubjects={}};
+                res.render('allSubjects',{user:req.user,school:school,page:page,subjects:subjects,userSubjects: userSubjects.subjects})
+            });
+        })
+    }else{
+        res.redirect('../courses');
+    }
+
+
+});
+
+app.get('/courses/newSubject', function (req, res) {
+    if(req.user && req.user.admin) {
+        res.render('formularioNewSubject',{page: page, school: school,user: req.user});
+    }else{
+        res.redirect('../courses');
+    }
+});
+
+app.post("/courses/newSubject",function(req,res){
+    if(req.user && req.user.admin) {
+        subjectsManager.newSubject(req.body);
+        res.redirect('../courses/allSubjects');
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
+
+app.post("/newComment/:id",function(req,res){
     if(req.user) {
+
         var id = req.params.id;
         req.body.name = req.user.name;
         req.body.postId = id;
@@ -250,36 +310,33 @@ app.post("/courses/newComment/:id",function(req,res){
         req.body.votersPos = [];
         req.body.votersNeg = [];
         commentsManager.newComment(req.body);
-        res.redirect('/article/' + id);
+        res.redirect(req.headers.referer);
     }else{
         res.redirect('courses/logIn');
     }
 });
 
 
-app.get('/courses/borrarComentario/:idC/:idP', function (req, res) {
+app.get('/borrarComentario/:idC', function (req, res) {
     if(req.user) {
         var idc = req.params.idC;
-        var idp = req.params.idP;
-        console.log(idc);
         commentsManager.deleteComment(idc);
-        res.redirect('/article/'+idp);
+        res.redirect(req.headers.referer);
     }else{
         res.redirect('../courses/logIn');
     }
 });
 
 
-app.get("/courses/voteComment/:idC/:vote/:idP",function(req,res){
+app.get("/voteComment/:idC/:vote",function(req,res){
     if(req.user) {
 
         var idC = req.params.idC;
         var type = req.params.vote;
-        var idP = req.params.idP;
         var voter = req.user.name;
 
         commentsManager.voteComment(idC, type,voter);
-        res.redirect('/article/' + idP);
+        res.redirect(req.headers.referer);
     }else{
         res.redirect('../courses/logIn');
     }

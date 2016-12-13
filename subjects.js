@@ -3,6 +3,7 @@ var SchemSubjects;
 var SchemPost;
 var SchemPosts
 var subject;
+var oneSubject;
 var postSubject;
 var post;
 
@@ -12,7 +13,6 @@ module.exports = {
     start: function (db) {
         SchemSubject = db.Schema({ name:String,
                                     year:String,
-                                    id:String,
                                     content: String,
                                     img: String,
                                     profesor: String,
@@ -36,25 +36,32 @@ module.exports = {
 
         });
 
+        oneSubject = db.model('subject',SchemSubject);
         subject = db.model('subjects',SchemSubjects);
         postSubject = db.model('postSubjects', SchemPosts);
         post = db.model('post',SchemPost);
     },
 
+    getSubjects: function(){
+        return subject.find({});
+    },
 
-
-    createSubjects: function(year,subjects) {
-        var newSubject = new subject({year: year,subjects: subjects});
-        newSubject.save(function (err) {
-            if(err) console.log("Error saving subject");
-            else {console.log("Subject saved")}
+    newSubject: function(body) {
+        var newSubject = new oneSubject(body);
+        subject.findOne({year:body.year},function (err,res) {
+            if(res) {
+                var newPosts = new postSubject({year:body.year,subjectName:body.name,posts:[]});
+                newPosts.save();
+                res.subjects.push(newSubject);
+                res.save();
+            }else{
+                var newPosts = new postSubject({year:body.year,subjectName:body.name,posts:[]});
+                newPosts.save();
+                var newSubjects = new subject({year:body.year,subjects:[]});
+                newSubjects.subjects.push(newSubject);
+                newSubjects.save();
+            }
         });
-
-        for(var i=0;i<subjects.length;i++){
-            var newPostSubject = postSubject({year:year,subjectName:subjects[i].name,posts:[]});
-            newPostSubject.save();
-        }
-
     },
 
     newPost: function (user,body,year,name) {
@@ -82,12 +89,8 @@ module.exports = {
         return subject.find({subjects:{$elemMatch:{_id:id}}})
     },
 
-    findSubjectInSubjects: function (id,subjects) {
-        for(var i=0;i<subjects.length;i++){
-            if(subjects[i]._id==id){
-                return subjects[i];
-            }
-        }
+    findSubject: function (id) {
+        return subject.findOne({subjects:{$elemMatch:{_id:id}}});
     },
 
     getUserSubjects: function(user){

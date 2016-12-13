@@ -42,6 +42,9 @@
             <ul>
                 <li><a href="../">HOME</a></li>
                 <li class="active"><a href="../courses">CURSOS</a></li>
+                {{#user.admin}}
+                <li class="active"><a href="../courses">AÑOS</a></li>
+                {{/user.admin}}
                 <div class="clearfix"> </div>
             </ul>
         </div>
@@ -58,6 +61,7 @@
 <div class="content">
     <div class="container">
         <div class="content-grids">
+
             <div class="col-md-8 single-main">
 
                 <div class="single-grid">
@@ -79,10 +83,10 @@
                         <div id = "commentBox">
                             <div>   <a id = "commentUser"> {{name}}</a>
                                     {{#equal ../user.name name}}
-                                    <a id = "commentDislike"  href="../courses/borrarComentario/{{_id}}/{{../article._id}}">Borrar</a>
+                                    <a id = "commentDislike"  href="../borrarComentario/{{_id}}">Borrar</a>
                                     {{/equal}}
-                                    <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{../article._id}}">Dislikes: {{dislikes}}</a>
-                                    <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{../article._id}}"> Likes: {{likes}}</a>
+                                    <a id = "commentDislike" href="../voteComment/{{_id}}/1">Dislikes: {{dislikes}}</a>
+                                    <a id = "commentLike" href="../voteComment/{{_id}}/0"> Likes: {{likes}}</a>
                             </div>
                             <div id = "commentText">
                             <p id = "commentText">{{comment}}</p>
@@ -99,9 +103,9 @@
                         {{#each comments}}
                         <div id = "commentBox">
                             <div>   <a id = "commentUser"> {{name}}</a>
-                                <a id = "commentDislike" href="../courses/borrarComentario/{{_id}}/{{../article._id}}"> Borrar </a>
-                                <a id = "commentDislike" href="../courses/voteComment/{{_id}}/1/{{../article._id}}">Dislikes: {{dislikes}}</a>
-                                <a id = "commentLike" href="../courses/voteComment/{{_id}}/0/{{../article._id}}"> Likes: {{likes}}</a>
+                                <a id = "commentDislike" href="../borrarComentario/{{_id}}"> Borrar </a>
+                                <a id = "commentDislike" href="../voteComment/{{_id}}/1">Dislikes: {{dislikes}}</a>
+                                <a id = "commentLike" href="../voteComment/{{_id}}/0"> Likes: {{likes}}</a>
                             </div>
                             <div id = "commentText">
                                 <p id = "commentText">{{comment}}</p>
@@ -112,7 +116,7 @@
                 </div>
 
                 <h3>Deja un comentario</h3>
-                <form id="commentForm" action="/courses/newComment/{{article._id}}" method="POST">
+                <form id="commentForm" action="/newComment/{{article._id}}" method="POST">
                     <div id = "input" class="row">
                         <label for="comment">Comentario</label><br />
                         <input id="comment" class="input" name="comment" type="text" value="" size="30" /><br />
@@ -124,22 +128,18 @@
 
             <div class="col-md-4 content-right">
                 <div class="recent">
-                    <h3>{{user.year}}</h3>
+                    <h3>Utilidades</h3>
                         <ul>
                             <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
                             {{#if user.admin}}
-                            <li><a href="../courses/borrarArticulo/{{article._id}}">Borrar Articulo</a></li>
+                            <li><a href="../borrarArticulo/{{article._id}}">Borrar Articulo</a></li>
                             {{/if}}
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
-                            <li><a href="#">Nuevo Topic</a></li>
-                            <li><a href="#">Notas Alumnos</a></li>
-                            <li><a href="#">Faltas Alumnos</a></li>
-                            <li><a href="#">Calendario Académico</a></li>
                         </ul>
 
                 </div>
                 <div class="recent">
-                    <h3>MATERIAS</h3>
+                    <h3>{{user.year}}</h3>
                     <ul>
                         {{#subjects}}
                             <li><a href="../subject/{{_id}}">{{name}}</a></li>
@@ -147,14 +147,7 @@
                     </ul>
                 </div>
                 <div class="clearfix"></div>
-                <div class="archives">
-                    <h3>TAREAS</h3>
-                    <ul>
-                        <li><a href="#">Completadas (10)</a></li>
-                        <li><a href="#">No completadas (200)</a></li>
-                    </ul>
-                </div>
-                <div class="clearfix"></div>
+
             </div>
             <div class="clearfix"></div>
         </div>

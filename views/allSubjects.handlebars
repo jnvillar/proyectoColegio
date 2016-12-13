@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>{{school.name}}</title>
-    <base href="/">
     <link href="../css/bootstrapCourses.css" rel='stylesheet' type='text/css' />
     <link href="../css/styleCourses.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,72 +62,34 @@
         <div class="content-grids">
             <div class="col-md-8 single-main">
 
-                <div id="subject_title">
-                    <p> {{post.name}}  </p>
-                </div>
+                {{#subjects}}
+                    <div id="subject_title">
+                        <p> {{year}}  </p>
+                    </div>
 
-                <div class="content-grid">
-                <p>{{post.content}}</p>
-                </div>
+                    <div class="content-grid">
 
-
-            <div class = "commentZone">
-                {{^user.admin}}
-                    {{#each comments}}
-                        <div id = "commentBox">
-                            <div>   <a id = "commentUser"> {{name}}</a>
-                                {{#equal ../user.name name}}
-                                    <a id = "commentDislike"  href="../borrarComentario/{{_id}}">Borrar</a>
-                                {{/equal}}
-                                <a id = "commentDislike" href="../voteComment/{{_id}}/1">Dislikes: {{dislikes}}</a>
-                                <a id = "commentLike" href="../voteComment/{{_id}}/0"> Likes: {{likes}}</a>
+                            {{#subjects}}
+                            <div id="postSubject">
+                                <a href="../subject/{{_id}}"> {{name}} </a>
                             </div>
-                            <div id = "commentText">
-                                <p id = "commentText">{{comment}}</p>
-                            </div>
-                        </div>
-                    {{/each}}
-                {{/user.admin}}
+                            {{/subjects}}
+
+                    </div>
+
+                {{/subjects}}
+
+                </div>
             </div>
-
-
-
-            <div class = "commentZone">
-                {{#user.admin}}
-                    {{#each comments}}
-                        <div id = "commentBox">
-                            <div>   <a id = "commentUser"> {{name}}</a>
-                                <a id = "commentDislike" href="../borrarComentario/{{_id}}"> Borrar </a>
-                                <a id = "commentDislike" href="../voteComment/{{_id}}/1">Dislikes: {{dislikes}}</a>
-                                <a id = "commentLike" href="../voteComment/{{_id}}/0"> Likes: {{likes}}</a>
-                            </div>
-                            <div id = "commentText">
-                                <p id = "commentText">{{comment}}</p>
-                            </div>
-                        </div>
-                    {{/each}}
-                {{/user.admin}}
-            </div>
-
-            <h3>Deja un comentario</h3>
-            <form id="commentForm" action="/newComment/{{post._id}}" method="POST">
-                <div id = "input" class="row">
-                    <label for="comment">Comentario</label><br />
-                    <input id="comment" class="input" name="comment" type="text" value="" size="30" /><br />
-                </div>
-                <input id="submit_button_comment" type="submit" value="Mandar Comentario" />
-            </form>
-        </div>
-
-
             <div class="col-md-4 content-right">
                 <div class="recent">
                     <h3>Utilidades</h3>
                         <ul>
-                            <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
+                            {{#user.admin}}
+                            <li><a href="../courses/newSubject">Agregar Una Materia</a></li>
+                            {{/user.admin}}
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
                         </ul>
-
                 </div>
                 <div class="recent">
                     <h3>{{user.year}}</h3>
@@ -138,9 +99,7 @@
                         {{/userSubjects}}
                     </ul>
                 </div>
-                <div class="clearfix"></div>
-
-                </div>
+            </div>
             <div class="clearfix"></div>
         </div>
     </div>
