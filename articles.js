@@ -4,7 +4,6 @@ var articles;
 module.exports = {
     start: function (db) {
         SchemArticles = db.Schema({title:String,
-                                    summary:String,
                                     content:String,
                                     img:String,
                                     author:String,
@@ -14,7 +13,6 @@ module.exports = {
     },
 
     newArticle: function (body) {
-        // console.log(body);
         var newArticle = new articles(body);
         newArticle.save()
     },

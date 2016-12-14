@@ -9,9 +9,15 @@ var hbs = exphbs.create({
             } else {
                 return options.fn(this);
             }
+        },
+        makeResume: function (string) {
+
+            return string.substring(0,150)+"...";
         }
+
     }
 });
+
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/prueba');
@@ -137,7 +143,6 @@ app.get('/article/:id', function (req, res) {
     }else{
         res.redirect('../courses/logIn');
     }
-
 });
 
 app.get('/subject/:id', function (req, res) {
