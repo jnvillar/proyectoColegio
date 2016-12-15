@@ -29,15 +29,16 @@ var hbs = exphbs.create({
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+//mongoose.connect('mongodb://localhost/prueba');
+
 
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
-
 mongoose.connect(mongodbUri, options);
-var conn = mongoose.connection;
-//mongoose.connect('mongodb://localhost/prueba');
 
+
+var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
 
 
@@ -181,7 +182,12 @@ app.get('/subject/:id', function (req, res) {
 
                 var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
                 subjectPosts.then(function (posts) {
-                    res.render('subject',{page: page,school: school, posts: posts.posts,user:req.user,userSubjects: subjects.subjects,subject:subject});
+                    res.render('subject',{  page: page,
+                                            school: school,
+                                            posts: posts.posts,
+                                            user:req.user,
+                                            userSubjects: subjects.subjects,
+                                            subject:subject});
                 });
             });
         });
@@ -191,14 +197,39 @@ app.get('/subject/:id', function (req, res) {
 
 });
 
-app.get('/deleteSubject/:idS',function () {
-    if(req.user && req.admin){
+app.get('/deleteSubject/:idS',function (req,res) {
+    if(req.user && req.user.admin){
         var idS = req.params.idS;
-        subjectsManager.deleteSubject(idS);
+        subjectsManager.deleteSubject(idS,commentsManager);
+        res.redirect("../courses/allSubjects");
     }else{
-        res.redirect('../courses/logIn');
+        res.redirect('../courses');
     }
 });
+
+
+
+app.get('/deleteSubjectPost/:idP',function (req,res) {
+    if(req.user && (req.user.teacher || req.user.admin)){
+        var idS = req.params.idS;
+        var idP = req.params.idP;
+        subjectsManager.deleteSubjectPost(idP,commentsManager);
+        res.redirect('../courses/allSubjects');
+    }else{
+        res.redirect('../courses');
+    }
+});
+
+app.get('/deleteYear/:year',function (req,res) {
+    if(req.user && req.user.admin){
+        var year = req.params.year;
+        subjectsManager.deleteYear(year,commentsManager);
+        res.redirect("../courses/allSubjects");
+    }else{
+        res.redirect('../courses');
+    }
+});
+
 
 
 app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
@@ -208,7 +239,6 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
         var findComments = commentsManager.getComments(idPost);
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         findComments.then(function (comments) {
-            console.log(comments);
             userSubjects.then(function (subjects) {
                 if(subjects==null){subjects={}}
                 var findSubject = subjectsManager.findSubject(idSubject);
@@ -251,7 +281,6 @@ app.get('/nuevoPostMateria/:id', function (req, res) {
 
 app.post('/nuevoPostMateria/:id', function (req, res) {
     if(req.user){
-
         var id = req.params.id;
         var findSubject = subjectsManager.findSubject(id);
         findSubject.then(function (subject) {
@@ -325,7 +354,12 @@ app.get('/courses/newSubject', function (req, res) {
     if(req.user && req.user.admin) {
         var findTeachers = users.getProfesors();
         findTeachers.then(function (teachers) {
-            res.render('formularioNewSubject',{page: page, school: school,user: req.user,teachers:teachers});
+            findUserSubjects = subjectsManager.getUserSubjects(req.user);
+            findUserSubjects.then(function (userSubjects) {
+                if(userSubjects==null){userSubjects={}};
+                res.render('formularioNewSubject',{page: page, school: school,user: req.user,teachers:teachers,userSubjects: userSubjects.subjects});
+            })
+
         });
     }else{
         res.redirect('../courses');
@@ -333,10 +367,8 @@ app.get('/courses/newSubject', function (req, res) {
 });
 
 app.post("/courses/newSubject",function(req,res){
-    console.log(req.body);
     req.body.year = req.body.year + " " + req.body.div;
     req.body.div = null;
-    console.log(req.body);
     if(req.user && req.user.admin) {
         subjectsManager.newSubject(req.body);
         res.redirect('../courses/allSubjects');

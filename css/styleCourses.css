@@ -51,6 +51,18 @@ position:relative;
   margin-left: 0% ;
 }
 
+#postTitle{
+  font-size: xx-large;
+  word-wrap: break-word;
+  width: inherit;
+
+}
+
+#post{
+  word-wrap: break-word;
+  width: inherit;
+}
+
 
 #listaMaterias{
   margin-top: 1%;

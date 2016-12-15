@@ -105,7 +105,7 @@
 
                         <div id="input">
                             <label for="imagen">Profesor: </label><br />
-                            <input list="teachers" size="30">
+                            <input list="teachers" name="profesor" size="30">
                             <datalist id="teachers">
                                 {{#teachers}}
                                 <option value="{{name}}">
@@ -136,7 +136,7 @@
                             }
                         </script>
 
-                        <input id="submit_button" type="submit"  style="margin-bottom: 2% " value="Mandar Post" />
+                        <input id="submit_button" type="submit"  style="margin-bottom: 2% " value="Publicar Materia" />
 
                     </form>
                 </div>
@@ -155,7 +155,7 @@
 
                 </div>
                 <div class="recent">
-                    <h3>MATERIAS</h3>
+                    <h3>{{user.year}}</h3>
                     <ul>
                         {{#userSubjects}}
                             <li><a href="../subject/{{_id}}">{{name}}</a></li>
@@ -163,13 +163,7 @@
                     </ul>
                 </div>
                 <div class="clearfix"></div>
-                <div class="archives">
-                    <h3>TAREAS</h3>
-                    <ul>
-                        <li><a href="#">Completadas (10)</a></li>
-                        <li><a href="#">No completadas (200)</a></li>
-                    </ul>
-                </div>
+
                 <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>

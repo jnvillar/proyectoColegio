@@ -58,25 +58,16 @@
     </div>
 </div>
 
-
 <div class="content">
     <div class="container">
         <div class="content-grids">
             <div class="col-md-8 single-main">
-
                 <div class="single-grid">
-                    <img src="{{article.img}}" alt=""/>
-                    <p> {{{article.content}}}  </p>
+                    <div id="postTitle"> {{post.name}} </div>
+                        <div id="post">
+                            <p>{{{post.content}}}</p>
+                        </div>
                 </div>
-
-                <div class="single-grid">
-
-                        <p> {{post.name}}  </p>
-
-                        <p>{{{post.content}}}</p>
-                </div>
-
-
 
 
             <div class = "commentZone">
@@ -134,6 +125,7 @@
                         <ul>
                             <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                            <li><a href="../deleteSubjectPost/{{post._id}}">Borrar Post</a></li>
                         </ul>
 
                 </div>
