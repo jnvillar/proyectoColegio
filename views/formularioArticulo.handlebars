@@ -6,6 +6,8 @@
     <link href="../css/styleCourses.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
     <meta name="keywords" content=""/>
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
@@ -54,6 +56,8 @@
                 $(".top-menu ul").slideToggle("slow" , function(){
                 });
             });
+
+
         </script>
     </div>
 </div>
@@ -63,26 +67,49 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
-
                     <form id="articleForm" action="../courses/nuevoArticulo" method="POST">
 
-                        <div id="input">
+                        <div id="input" style="margin-bottom: 2%">
                             <label for="titulo">Titulo Articulo:</label><br />
-                            <input id="titulo" class="input" name="title" type="text" value="" size="30" /><br />
+                            <input id="titulo" class="input" name="title" type="text" value="" size="30" required/><br />
                         </div>
+                        <script>
 
-                        <div id="input">
-                            <label for="imagen">Url Imagen:</label><br />
-                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
-                        </div>
+                            $('#titulo input').blur(function()
+                            {
+                                if( !$(this).val() ) {
+                                    $(this).parents('p').addClass('warning');
+                                }
+                            });
+
+                        </script>
 
                         <textarea name="content" id="editor1" rows="10" cols="80"></textarea>
 
-                        <script>
+                            <script>
                             CKEDITOR.replace( 'editor1' );
+
+                            function checkform(form) {
+
+                                var url = $("#img").val();
+                                if (validateURL(url)) { } else {
+                                    alert("Please enter a valid URL, remember including http://");
+                                }
+
+                                var inputs = form.getElementsByTagName('input');
+                                for (var i = 0; i < inputs.length; i++) {
+                                    if (inputs[i].hasAttribute("required")) {
+                                        if (inputs[i].value == "") {
+                                            alert();
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return true;
+                            }
                         </script>
 
-                        <input id="submit_button" type="submit" value="Mandar Articulo" />
+                        <input id="submit_button"  style="margin-bottom: 2% "type="submit" value="Mandar Articulo" />
 
                     </form>
                 </div>

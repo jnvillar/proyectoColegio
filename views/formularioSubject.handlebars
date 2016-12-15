@@ -65,19 +65,31 @@
 
                     <form action="../nuevoPostMateria/{{id}}" method="post" >
 
-                        <div id="input">
+                        <div id="input" style="margin-bottom: 2%">
                             <label for="titulo">Titulo Post:</label><br />
-                            <input id="titulo" class="input" name="name" type="text" value="" size="30" /><br />
+                            <input id="titulo" class="input" name="name" type="text" value="" size="30" required /><br />
                         </div>
 
                         <textarea name="content" id="editor1" rows="10" cols="80"></textarea>
 
                         <script>
                             CKEDITOR.replace( 'editor1' );
+
+                            function checkform(form) {
+                                var inputs = form.getElementsByTagName('input');
+                                for (var i = 0; i < inputs.length; i++) {
+                                    if(inputs[i].hasAttribute("required")){
+                                        if(inputs[i].value == ""){
+                                            alert();
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return true;
+                            }
                         </script>
 
-
-                        <input id="submit_button" type="submit" value="Publicar Post">
+                        <input id="submit_button" type="submit" value="Publicar Post" style="margin-bottom: 2%">
                     </form>
 
                 </div>

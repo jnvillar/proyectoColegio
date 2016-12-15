@@ -22,6 +22,7 @@
 				});
 	</script>
 
+
 </head>
 <body>
 <div class="header">
@@ -64,9 +65,10 @@
 					 {{#articles}}
 					 <div class="content-grid-info">
 						 <div class="post-info">
-                             <img  src= "{{img}}" alt="" >
 							 <h4><a href="../article/{{_id}}">{{title}}</a>  </h4>
-							 <p>{{makeResume content}}</p>
+                             <div style="word-wrap: break-word; width: inherit;">
+							 {{{makeResume content}}}
+                             </div>
 							 <a href="../article/{{_id}}"><span></span>Seguir leyendo</a>
 						 </div>
 					 </div>

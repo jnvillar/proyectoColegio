@@ -30,6 +30,7 @@ module.exports = {
 
         SchemPosts = db.Schema({year: String,
                                 subjectName: String,
+                                idS: String,
                                 posts: [SchemPost]
 
         });
@@ -44,11 +45,21 @@ module.exports = {
         return subject.find({});
     },
 
+    deleteSubject: function (id) {
+        subject.findOne({_id: id}, function (err, subject) {
+            subject.remove(function (err) {
+                if (err) {
+                    console.error('Error al borrar Materia');
+                }
+            });
+        });
+    },
+
     newSubject: function(body) {
         var newSubject = new oneSubject(body);
         subject.findOne({year:body.year},function (err,res) {
             if(res) {
-                var newPosts = new postSubject({year:body.year,subjectName:body.name,posts:[]});
+                var newPosts = new postSubject({year:body.year,subjectName:body.name,idS:newSubject._id,posts:[]});
                 newPosts.save();
                 res.subjects.push(newSubject);
                 res.save();
@@ -62,9 +73,9 @@ module.exports = {
         });
     },
 
-    newPost: function (user,body,year,name) {
+    newPost: function (user,body,year,name,idS) {
         var newPost = new post(body);
-        postSubject.findOne({year:year,subjectName:name},function(err,res){
+        postSubject.findOne({year:year,subjectName:name,idS:idS},function(err,res){
             res.posts.push(newPost);
             res.save()
         });

@@ -12,6 +12,7 @@ module.exports = {
         SchemUsers = db.Schema({name: String,
                                 password: String,
                                 admin: Boolean,
+                                teacher: Boolean,
                                 img: String,
                                 year: String});
         users =  db.model('users', SchemUsers);
@@ -38,8 +39,12 @@ module.exports = {
         });
     },
 
-    createUser: function(name,pass,admin,year,img) {
-        var user = new users({name: name,password: pass,admin: admin, year: year,img: img});
+    getProfesors: function () {
+        return users.find({teacher:true})
+    },
+
+    createUser: function(name,pass,admin,year,img,teacher) {
+        var user = new users({name: name,password: pass,admin: admin, year: year,img: img,teacher: teacher});
         user.save(function (err) {
             if(err) console.log("Error saving user");
             else {console.log("User saved")}

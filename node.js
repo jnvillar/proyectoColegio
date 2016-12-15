@@ -11,8 +11,17 @@ var hbs = exphbs.create({
             }
         },
         makeResume: function (string) {
+            return string.substring(0,300)+" ...";
+        },
+        isTeacher:function(name,profesor,teacher,options){
 
-            return string.substring(0,150)+"...";
+
+            if(teacher){
+                if(name==profesor){
+                    return options.fn(this);
+                }
+            }
+            return options.inverse(this);
         }
 
     }
@@ -41,8 +50,9 @@ subjectsManager.start(mongoose);
 var users = require('./users');
 users.start(mongoose,passport);
 
-//users.createUser('alu','alu',false,"tercero");
-//users.createUser('admin','admin',true,"tercero","");
+/* users.createUser('alu','alu',false,"6to Año A",false);
+ users.createUser('admin','admin',true,"6to Año A","",false);
+ users.createUser('tea','tea',true,"6to Año A","",true);*/
 //var aux=[];
 //var s = {};s.name = "matematica"; s.content = "esto es mate"; s.img = ""; s.profesor = "gonzalez"; s.imgProfesor= ""; s.year="tercero";
 //aux.push(s);
@@ -169,6 +179,15 @@ app.get('/subject/:id', function (req, res) {
 
 });
 
+app.get('/deleteSubject/:idS',function () {
+    if(req.user && req.admin){
+        var idS = req.params.idS;
+        subjectsManager.deleteSubject(idS);
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
 
 app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
     if(req.user){
@@ -227,7 +246,7 @@ app.post('/nuevoPostMateria/:id', function (req, res) {
             var subject = _.find(subject.subjects, function(subject) {
                 return subject['_id'] == id;
             });
-            subjectsManager.newPost(req.user,req.body,subject.year,subject.name);
+            subjectsManager.newPost(req.user,req.body,subject.year,subject.name,subject._id);
             res.redirect('../subject/'+id);
         });
     }else{
@@ -263,7 +282,6 @@ app.get('/courses/nuevoArticulo', function (req, res) {
 
 app.post("/courses/nuevoArticulo",function(req,res){
     if(req.user) {
-
         req.body.author = req.user.name;
         req.body.imgAuthor = req.user.img;
 
@@ -293,13 +311,20 @@ app.get('/courses/allSubjects',function(req,res){
 
 app.get('/courses/newSubject', function (req, res) {
     if(req.user && req.user.admin) {
-        res.render('formularioNewSubject',{page: page, school: school,user: req.user});
+        var findTeachers = users.getProfesors();
+        findTeachers.then(function (teachers) {
+            res.render('formularioNewSubject',{page: page, school: school,user: req.user,teachers:teachers});
+        });
     }else{
         res.redirect('../courses');
     }
 });
 
 app.post("/courses/newSubject",function(req,res){
+    console.log(req.body);
+    req.body.year = req.body.year + " " + req.body.div;
+    req.body.div = null;
+    console.log(req.body);
     if(req.user && req.user.admin) {
         subjectsManager.newSubject(req.body);
         res.redirect('../courses/allSubjects');

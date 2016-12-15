@@ -76,11 +76,19 @@
             </div>
             <div class="col-md-4 content-right">
                 <div class="recent">
+                    <h3>Profesor</h3>
+                    <ul>
+                       <a >{{subject.profesor}}</a>
+                    </ul>
+
+                </div>
+                <div class="recent">
                     <h3>Utilidades</h3>
                         <ul>
-                            {{#equal user.name subject.profesor}}
+                            {{#isTeacher user.name subject.profesor user.teacher}}
                             <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
-                            {{/equal}}
+                            {{/isTeacher}}
+                            <li><a href="../deleteSubject/{{subject_id}}">Cerrar Sesión</a></li>
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
                         </ul>
 

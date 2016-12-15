@@ -62,41 +62,81 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
-
-
                     <form id="articleForm" action="../courses/newSubject" method="POST">
 
                         <div id="input">
                             <label for="titulo">Año de la materia:</label><br />
-                            <input id="titulo" class="input" name="year" type="text" value="" size="30" /><br />
+                            <input list="subjects" id="titulo" class="input" name="year" type="text" value="" size="30" required><br />
+                            <datalist id="subjects">
+                                <option value="6to Año">
+                                <option value="5to Año">
+                                <option value="4to Año">
+                                <option value="3to Año">
+                                <option value="2to Año">
+                                <option value="1to Año">
+                            </datalist>
+                        </div>
+
+                        <div id="input" >
+                            <label for="titulo">División:</label><br />
+                            <input list="divs" id="div" class="input" name="div" type="text" value="" size="30" required><br />
+                            <datalist id="divs">
+                                <option value="A">
+                                <option value="B">
+                                <option value="C">
+                            </datalist>
                         </div>
 
                         <div id="input">
                             <label for="name">Nombre de la materia:</label><br />
-                            <input id="name" class="input" name="name" type="text" value="" size="30" /><br />
+                            <input id="name" class="input" name="name" type="text" value="" size="30" required/><br />
                         </div>
 
                         <div id="input">
                             <label for="contenido">Descripcion de la materia:</label><br />
-                            <input id="contenido" class="input" name="content" type="text" value="" size="30" /><br />
+                            <input id="contenido" class="input" name="content" type="text" value="" size="30" required/><br />
                         </div>
 
                         <div id="input">
                             <label for="imagen">Url Imagen: (opcional)</label><br />
-                            <input id="imagen" class="input" name="img" type="text" value="" size="30" /><br />
+                            <input id="imagen" class="input" name="img" type="text" value="" size="30" required/><br />
                         </div>
 
+
                         <div id="input">
-                            <label for="autor">Profesor: </label><br />
-                            <input id="autor" class="input" name="profesor" type="text" value="" size="30" /><br />
+                            <label for="imagen">Profesor: </label><br />
+                            <input list="teachers" size="30">
+                            <datalist id="teachers">
+                                {{#teachers}}
+                                <option value="{{name}}">
+                                {{/teachers}}
+                            </datalist>
+
+
+
                         </div>
 
                         <div id="input">
                             <label for="imgAutor">Imagen del profesor: (opcional)</label><br />
-                            <input id="imgAutor" class="input" name="imgProfesor" type="text" value="" size="30" /><br />
+                            <input id="imgAutor" class="input" name="imgProfesor" type="text" value="" size="30" required /><br />
                         </div>
 
-                        <input id="submit_button" type="submit" value="Mandar Post" />
+                        <script>
+                            function checkform(form) {
+                                var inputs = form.getElementsByTagName('input');
+                                for (var i = 0; i < inputs.length; i++) {
+                                    if(inputs[i].hasAttribute("required")){
+                                        if(inputs[i].value == ""){
+                                            alert();
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return true;
+                            }
+                        </script>
+
+                        <input id="submit_button" type="submit"  style="margin-bottom: 2% " value="Mandar Post" />
 
                     </form>
                 </div>
