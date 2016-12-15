@@ -29,7 +29,19 @@ var hbs = exphbs.create({
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/prueba');
+
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+    replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
+var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
+
+mongoose.connect(mongodbUri, options);
+var conn = mongoose.connection;
+//mongoose.connect('mongodb://localhost/prueba');
+
+conn.on('error', console.error.bind(console, 'connection error:'));
+
+
+
 var passport = require('passport');
 var session  = require('express-session');
 var cookieParser = require('cookie-parser');
