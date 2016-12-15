@@ -5,7 +5,6 @@ module.exports = {
     start: function (db) {
         SchemArticles = db.Schema({title:String,
                                     content:String,
-                                    img:String,
                                     author:String,
                                     imgAuthor:String});
 

@@ -63,7 +63,7 @@ subjectsManager.start(mongoose);
 var users = require('./users');
 users.start(mongoose,passport);
 
-/* users.createUser('alu','alu',false,"6to Año A",false);
+/*users.createUser('alu','alu',false,"6to Año A",false);
  users.createUser('admin','admin',true,"6to Año A","",false);
  users.createUser('tea','tea',true,"6to Año A","",true);*/
 //var aux=[];
