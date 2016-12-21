@@ -64,7 +64,7 @@
             <div class="col-md-8 single-main">
                 <div class="single-grid" >
                     <div id="postTitle">{{article.title}}</div>
-                        <div id = "post">
+                        <div id = "post" >
                             <p> {{{article.content}}}  </p>
                         </div>
                 </div>
@@ -135,6 +135,9 @@
                             <li><a href="../borrarArticulo/{{article._id}}">Borrar Articulo</a></li>
                             {{/if}}
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                            {{#if user.teacher}}
+                                <li><a href="../courses/years">Sistema de Notas</a></li>
+                            {{/if}}
                         </ul>
 
                 </div>

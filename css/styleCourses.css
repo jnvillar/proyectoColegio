@@ -59,8 +59,13 @@ position:relative;
 }
 
 #post{
-  word-wrap: break-word;
-  width: inherit;
+  word-wrap: break-word ;
+  width: inherit ;
+}
+
+#post img{
+  max-width:100%;
+  max-height:100%;
 }
 
 
@@ -207,6 +212,8 @@ padding:2em;
 }
 
 .post-info img{
+  max-width:100%;
+  max-height:100%;
   height: 100%;
   width: 100%;
 }

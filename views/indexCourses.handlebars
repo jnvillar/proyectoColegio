@@ -81,6 +81,9 @@
 					 <ul>
 						 <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
 						 <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                         {{#if user.teacher}}
+                         <li><a href="../courses/years">Sistema de Notas</a></li>
+                         {{/if}}
 					 </ul>
 				 </div>
 				 <div class="recent">

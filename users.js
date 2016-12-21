@@ -51,6 +51,10 @@ module.exports = {
         });
     },
 
+    getUsersInYear: function (year) {
+        return users.find({year:year})
+    },
+
     authenticateUser: function (body,res) {
         var token;
         users.findOne({name:body.name},function (err,user) {

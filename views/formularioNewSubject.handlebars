@@ -143,14 +143,13 @@
             </div>
             <div class="col-md-4 content-right">
                 <div class="recent">
-                    <h3>{{user.year}}</h3>
+                    <h3>Utilidades</h3>
                     <ul>
                         <li><a href="../courses/nuevoArticulo">Nuevo Articulo</a></li>
                         <li><a href="../courses/logout">Cerrar Sesión</a></li>
-                        <li><a href="#">Nuevo Topic</a></li>
-                        <li><a href="#">Notas Alumnos</a></li>
-                        <li><a href="#">Faltas Alumnos</a></li>
-                        <li><a href="#">Calendario Académico</a></li>
+                        {{#if user.teacher}}
+                            <li><a href="../courses/years">Sistema de Notas</a></li>
+                        {{/if}}
                     </ul>
 
                 </div>

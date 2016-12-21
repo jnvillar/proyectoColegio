@@ -123,9 +123,12 @@
                 <div class="recent">
                     <h3>Utilidades</h3>
                         <ul>
-                            <li><a href="../nuevoPostMateria/{{subject._id}}">Nueva Publicacion en {{subject.name}} </a></li>
+
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
                             <li><a href="../deleteSubjectPost/{{post._id}}">Borrar Post</a></li>
+                            {{#if user.teacher}}
+                                <li><a href="../courses/years">Sistema de Notas</a></li>
+                            {{/if}}
                         </ul>
 
                 </div>

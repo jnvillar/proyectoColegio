@@ -14,8 +14,6 @@ var hbs = exphbs.create({
             return string.substring(0,300)+" ...";
         },
         isTeacher:function(name,profesor,teacher,options){
-
-
             if(teacher){
                 if(name==profesor){
                     return options.fn(this);
@@ -29,14 +27,14 @@ var hbs = exphbs.create({
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-//mongoose.connect('mongodb://localhost/prueba');
+mongoose.connect('mongodb://localhost/prueba');
 
-
+/*
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
 mongoose.connect(mongodbUri, options);
-
+*/
 
 var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
@@ -54,6 +52,8 @@ var methodOverride = require('method-override');
 var funciones = require('./colegio');
 var school = funciones.school();
 var page = funciones.page();
+var gradesManager = require('./grades');
+gradesManager.start(mongoose);
 var articleManager = require('./articles');
 articleManager.start(mongoose);
 var commentsManager = require('./comments');
@@ -62,8 +62,8 @@ var subjectsManager = require('./subjects');
 subjectsManager.start(mongoose);
 var users = require('./users');
 users.start(mongoose,passport);
-
-/*users.createUser('alu','alu',false,"6to Año A",false);
+/*
+users.createUser('alu','alu',false,"6to Año A",false);
  users.createUser('admin','admin',true,"6to Año A","",false);
  users.createUser('tea','tea',true,"6to Año A","",true);*/
 //var aux=[];
@@ -124,6 +124,75 @@ app.get('/courses/logIn',function(req,res) {
         res.render('logIn', {page: page});
     }
 });
+
+app.get('/courses/years',function (req,res) {
+    if(req.user && req.user.teacher){
+        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        var findSubjects = subjectsManager.getSubjects();
+
+        findUserSubjects.then(function (userSubjects) {
+            if(userSubjects==null){userSubjects={}}
+            findSubjects.then(function (subjects) {
+                res.render('years',{page: page,
+                                    school: school,
+                                    users: users,
+                                    subjects: subjects,
+                                    userSubjects: userSubjects.subjects,
+                                    user:req.user});
+                })
+            });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
+
+app.get('/courses/years/:year/:idS',function(req,res) {
+    if(req.user) {
+        var year = req.params.year;
+        var idS = req.params.year;
+        var findUsersInYear = users.getUsersInYear(year);
+        var userGrades = gradesManager.getUserGrades(req.user._id);
+        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        findUsersInYear.then(function (students) {
+            userGrades.then(function(userGrades){
+                if (userGrades==null){userGrades={}}
+                findUserSubjects.then(function (userSubjects) {
+                    if (userSubjects==null){userSubjects={}}
+                    res.render('studentsPerYear',{  page: page,
+                                                    school: school,
+                                                    user: req.user,
+                                                    userGrades: userGrades,
+                                                    userSubjects: userSubjects.subjects,
+                                                    students: students});
+                })
+            })
+        })
+    }else {
+        res.render('logIn', {page: page});
+    }
+});
+
+
+
+
+app.post('/courses/newGrade',function (req,res) {
+    if(req.user && req.user.teacher){
+        var id = req.params.id;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}};
+            res.render('formularioSubject',{page: page,
+                school: school,
+                id:id,
+                userSubjects: subjects.subjects,
+                user:req.user});
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
 
 app.post('/courses/logIn', passport.authenticate('local',{
     successRedirect: '../courses',
@@ -266,12 +335,16 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
 });
 
 app.get('/nuevoPostMateria/:id', function (req, res) {
-    if(req.user){
+    if(req.user && req.user.teacher){
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
         userSubjects.then(function (subjects) {
             if(subjects==null){subjects={}};
-            res.render('formularioSubject',{page: page, school: school,id:id,userSubjects: subjects.subjects});
+            res.render('formularioSubject',{page: page,
+                                            school: school,
+                                            id:id,
+                                            userSubjects: subjects.subjects,
+                                            user:req.user});
         });
     }else{
         res.redirect('../courses/logIn');
