@@ -44,6 +44,7 @@
                 <li class="active"><a href="../courses">CURSOS</a></li>
                 {{#user.admin}}
                     <li class="active"><a href="../courses/allSubjects">AÑOS</a></li>
+                    <li class="active"><a href="../courses/students">ESTUDIANTES</a></li>
                 {{/user.admin}}
                 <div class="clearfix"> </div>
             </ul>
@@ -106,18 +107,33 @@
                     </ul>
 
                 </div>
-                <div class="recent">
-                    <h3>{{user.year}}</h3>
-                    <ul>
-                        {{#userSubjects}}
-                            <li><a href="../subject/{{_id}}">{{name}}</a></li>
-                        {{/userSubjects}}
-                    </ul>
-                </div>
-                <div class="clearfix"></div>
-                <div class="archives">
+                {{#unless user.teacher}}
+                    <div class="recent">
+                        <h3>Materias</h3>
+                        <ul>
+                            {{#subjects}}
+                                <li><a href="../subject/{{_id}}">{{name}}</a></li>
+                            {{/subjects}}
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                {{/unless}}
 
-                </div>
+                {{#if user.teacher}}
+                    <div class="recent">
+                        <h3>Materias</h3>
+                        <ul>
+                            {{#teacherSubjects}}
+                                <h3 style="margin-top: 8%">{{year}}</h3>
+                                {{#subjects}}
+                                    <li><a href="../subject/{{_id}}">{{name}}</a></li>
+                                {{/subjects}}
+                            {{/teacherSubjects}}
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                {{/if}}
+
                 <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>

@@ -43,6 +43,10 @@ module.exports = {
         return users.find({teacher:true})
     },
 
+    getStudents: function() {
+        return users.find({admin: false, teacher: false})
+    },
+
     createUser: function(name,pass,admin,year,img,teacher) {
         var user = new users({name: name,password: pass,admin: admin, year: year,img: img,teacher: teacher});
         user.save(function (err) {

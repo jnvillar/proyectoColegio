@@ -1,8 +1,10 @@
 var SchemSubject;
 var SchemSubjects;
 var SchemPost;
-var SchemPosts
+var SchemPosts;
+var SchemSubjectsPending;
 var subject;
+var pendingSubjects;
 var oneSubject;
 var postSubject;
 var post;
@@ -28,21 +30,42 @@ module.exports = {
             content: String
         });
 
+        SchemSubjectsPending = db.Schema({
+            idStudent: String,
+            subjectsPending: [SchemSubject]
+        });
+
         SchemPosts = db.Schema({year: String,
                                 subjectName: String,
                                 idS: String,
                                 posts: [SchemPost]
-
         });
 
         oneSubject = db.model('subject',SchemSubject);
         subject = db.model('subjects',SchemSubjects);
         postSubject = db.model('postSubjects', SchemPosts);
         post = db.model('post',SchemPost);
+        pendingSubjects = db.model('pendingSubjects',SchemSubjectsPending);
     },
 
     getSubjects: function(){
         return subject.find({});
+    },
+
+    addPendingSubjectToUser: function(idUser,subject){
+        pendingSubjects.find({idUser:idUser},function (res) {
+            if(res){
+                res.subjectsPending.push(subject);
+            }else{
+                var pendingSubjects = [subject];
+                var newPendingSubject = newPendingSubject({idUser:idUser,subjectsPending:pendingSubjects});
+                newPendingSubject.save();
+            }
+        })
+    },
+
+    getTeacherSubjects: function(teacherName){
+        return subject.find({subjects:{$elemMatch:{profesor:teacherName}}})
     },
 
     deleteSubjectPost: function(idPost,commentManager){

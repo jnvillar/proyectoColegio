@@ -44,6 +44,7 @@
                 <li class="active"><a href="../courses">CURSOS</a></li>
                 {{#user.admin}}
                     <li class="active"><a href="../courses/allSubjects">AÑOS</a></li>
+                    <li class="active"><a href="../courses/students">ESTUDIANTES</a></li>
                 {{/user.admin}}
                 <div class="clearfix"> </div>
             </ul>
@@ -93,11 +94,14 @@
                 </div>
 
                 <div class="recent">
-                    <h3>{{user.year}}</h3>
+                    <h3>Materias</h3>
                     <ul>
-                        {{#userSubjects}}
-                            <li><a href="../subject/{{_id}}">{{name}}</a></li>
-                        {{/userSubjects}}
+                        {{#teacherSubjects}}
+                            <h3 style="margin-top: 8%">{{year}}</h3>
+                            {{#subjects}}
+                                <li><a href="../subject/{{_id}}">{{name}}</a></li>
+                            {{/subjects}}
+                        {{/teacherSubjects}}
                     </ul>
                 </div>
                 <div class="clearfix"></div>

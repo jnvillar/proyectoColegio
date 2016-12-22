@@ -63,34 +63,37 @@
     <div class="container">
         <div class="content-grids">
             <div class="col-md-8 single-main">
+                <div id="subject_title">
+                    <p> Alumnos  </p>
+                </div>
 
-                    {{#subjects}}
-                        <div id="subject_title">
-                            <p> {{year}}  </p>
+                <div class="content-grid">
+                        <div id="postSubject">
+                            <table style="width:70%">
+                                {{#each students}}
+                                <tr>
+                                    <td>{{@key}}{{this.name}}</td>
+                                    <td>{{:this}}</td>
+                                </tr>
+                                {{/each}}
+                            </table>
                         </div>
-                            {{#each subjects}}
-                            <div id="postSubject">
-                                {{#isTeacher ../../user.name profesor ../../user.teacher }}
-                                <a href="../courses/years/{{year}}/{{_id}}">{{name}}</a>
-                                {{/isTeacher}}
-                            </div>
-                            {{/each}}
+                </div>
 
-
-                    {{/subjects}}
-
+                </div>
             </div>
 
 
             <div class="col-md-4 content-right">
-
                 <div class="recent">
                     <h3>Utilidades</h3>
                         <ul>
                             <li><a href="../courses/logout">Cerrar Sesión</a></li>
+                            {{#if user.teacher}}
+                                <li><a href="../courses/years">Sistema de Notas</a></li>
+                            {{/if}}
                         </ul>
                 </div>
-
 
                 <div class="recent">
                     <h3>Materias</h3>
@@ -98,13 +101,12 @@
                         {{#teacherSubjects}}
                             <h3 style="margin-top: 8%">{{year}}</h3>
                             {{#subjects}}
-                            <li><a href="../subject/{{_id}}">{{name}}</a></li>
+                                <li><a href="../subject/{{_id}}">{{name}}</a></li>
                             {{/subjects}}
                         {{/teacherSubjects}}
                     </ul>
                 </div>
                 <div class="clearfix"></div>
-
 
                 </div>
             <div class="clearfix"></div>

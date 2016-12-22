@@ -33,15 +33,15 @@ var hbs = exphbs.create({
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-/*
-mongoose.connect('mongodb://localhost/prueba');
-*/
 
+mongoose.connect('mongodb://localhost/prueba');
+
+/*
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
 mongoose.connect(mongodbUri, options);
-
+*/
 
 var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
@@ -71,7 +71,11 @@ var users = require('./users');
 users.start(mongoose,passport);
 
 /*
-users.createUser('alu','alu',false,"6to Año A",false);
+users.createUser('alu','alu',false,"6to Año A","",false);
+ users.createUser('alu2','alu',false,"6to Año A","",false);
+ users.createUser('alu3','alu',false,"5to Año A","",false);
+ users.createUser('alu4','alu',false,"5to Año A","",false);
+ users.createUser('alu5','alu',false,"4to Año A","",false);
  users.createUser('admin','admin',true,"6to Año A","",false);
  users.createUser('tea','tea',true,"6to Año A","",true);*/
 //var aux=[];
@@ -133,18 +137,35 @@ app.get('/courses/logIn',function(req,res) {
     }
 });
 
+app.get('/courses/students',function(req,res){
+    if(req.user && req.user.admin){
+        var findStudents = users.getStudents()
+        findStudents.then(function (students) {
+            if(students==null){students={}}
+            studentPerYear = _.groupBy(students,'year');
+            console.log(studentPerYear);
+            res.render('students',{ page: page,
+                                    school: school,
+                                    students: studentPerYear,
+                                    user:req.user});
+        })
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
 app.get('/courses/years',function (req,res) {
     if(req.user && req.user.teacher){
-        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         var findSubjects = subjectsManager.getSubjects();
-        findUserSubjects.then(function (userSubjects) {
-            if(userSubjects==null){userSubjects={}}
+        findTeacherSubjects.then(function (teacherSubjects) {
+            if(teacherSubjects==null){teacherSubjects={}}
             findSubjects.then(function (subjects){
                 res.render('years',{page: page,
                                     school: school,
                                     users: users,
                                     subjects: subjects,
-                                    userSubjects: userSubjects.subjects,
+                                    teacherSubjects: teacherSubjects,
                                     user:req.user});
                 })
             });
@@ -156,28 +177,28 @@ app.get('/courses/years',function (req,res) {
 
 
 app.get('/courses/years/:year/:idS',function(req,res) {
-    if(req.user) {
+    if(req.user && req.user.teacher) {
         var year = req.params.year;
         var idS = req.params.idS;
         var findUsersInYear = users.getUsersInYear(year);
         var userGrades = gradesManager.getUserGrades(req.user._id);
-        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         var findSubject = subjectsManager.findSubject(idS);
         findSubject.then(function (subject) {
             var subject = _.find(subject.subjects, function (subject) {
                 return subject['_id'] == idS;
             });
             findUsersInYear.then(function (students) {
-                    findUserSubjects.then(function (userSubjects) {
-                        if (userSubjects == null) {userSubjects = {}}
-                        res.render('studentsPerYear', {
-                            page: page,
-                            school: school,
-                            user: req.user,
-                            userSubjects: userSubjects.subjects,
-                            subject: subject,
-                            students: students
-                        });
+                findTeacherSubjects.then(function (teacherSubjects) {
+                    if (teacherSubjects == null) {teacherSubjects = {}}
+                    res.render('studentsPerYear', {
+                        page: page,
+                        school: school,
+                        user: req.user,
+                        teacherSubjects: teacherSubjects,
+                        subject: subject,
+                        students: students
+                    });
                     })
                 })
             });
@@ -191,21 +212,21 @@ app.get('/courses/newGrade/:idS/:idU',function (req,res) {
         var idS = req.params.idS;
         var idU = req.params.idU;
         var findSubject = subjectsManager.findSubject(idS);
-        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         var findUser = users.getUser(idU);
         findSubject.then(function (subject) {
             var subject = _.find(subject.subjects, function (subject) {
                 return subject['_id'] == idS;
             });
-            userSubjects.then(function (subjects) {
-                if(subjects==null){subjects={}}
+            findTeacherSubjects.then(function (teacherSubjects) {
+                if(teacherSubjects==null){teacherSubjects={}}
                 findUser.then(function (student) {
                     res.render('formularioNota', {
                         page: page,
                         school: school,
                         student:student,
                         subject: subject,
-                        userSubjects: subjects.subjects,
+                        teacherSubjects: teacherSubjects,
                         user: req.user
                     });
                 });
@@ -243,7 +264,7 @@ app.get('/courses/getGrades/:idS/:idU',function (req,res) {
         var idS = req.params.idS;
         var findGrades = gradesManager.getUserGrades(idU,idS);
         var findUser = users.getUser(idU);
-        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         findGrades.then(function (studentGrades) {
             var grades = [];
             for (var i = 0; i < studentGrades.grades.length; i++) {
@@ -252,15 +273,15 @@ app.get('/courses/getGrades/:idS/:idU',function (req,res) {
                 }
             }
             findUser.then(function (student) {
-                findUserSubjects.then(function (userSubjects) {
-                    if(userSubjects==null){userSubjects={}}
+                findTeacherSubjects.then(function (teacherSubjects) {
+                    if(teacherSubjects==null){teacherSubjects={}}
                     res.render('studentGrades', {
                         page: page,
                         school: school,
                         student:student,
                         subject: {idS:idS},
                         studentGrades:grades,
-                        userSubjects: userSubjects.subjects,
+                        teacherSubjects: teacherSubjects,
                         user: req.user})
                 });
             });
@@ -276,10 +297,10 @@ app.get('/courses/modifyGrade/:idG/:idU/:idS',function (req,res) {
         var idG = req.params.idG;
         var idU = req.params.idU;
         var idS = req.params.idS;
-        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         var findUser = users.getUser(idU);
-        userSubjects.then(function (subjects) {
-            if(subjects==null){subjects={}}
+        findTeacherSubjects.then(function (teacherSubjects) {
+            if(teacherSubjects==null){teacherSubjects={}}
             findUser.then(function (student) {
                 res.render('formularioModificarNota', {
                     page: page,
@@ -287,7 +308,7 @@ app.get('/courses/modifyGrade/:idG/:idU/:idS',function (req,res) {
                     student:student,
                     subject:{idS:idS},
                     grade:{idG:idG},
-                    userSubjects: subjects.subjects,
+                    teacherSubjects: teacherSubjects,
                     user: req.user
                 });
             });
@@ -328,10 +349,19 @@ app.get('/courses', function (req, res) {
     if(req.user) {
         var articles = articleManager.getArticles();
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         articles.then(function (articles) {
             userSubjects.then(function (subjects) {
                 if(subjects==null){subjects={}};
-                res.render('indexCourses',{school:school,articles:articles.reverse(),page:page,subjects:subjects.subjects,user:req.user});
+                findTeacherSubjects.then(function (teacherSubjects) {
+                    if(teacherSubjects==null){teacherSubjects={}}
+                    res.render('indexCourses',{ school:school,
+                                                articles:articles.reverse(),
+                                                page:page,
+                                                teacherSubjects: teacherSubjects,
+                                                subjects:subjects.subjects,
+                                                user:req.user});
+                })
             });
         });
     }else{
@@ -345,16 +375,24 @@ app.get('/article/:id', function (req, res) {
         var comments = commentsManager.getComments(id);
         var article = articleManager.findArticle(id);
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         article.then(function (article) {
             comments.then(function (comments) {
                 userSubjects.then(function (subjects) {
                     if(subjects==null){subjects={}};
-                    res.render('single',{page: page,school: school, article: article[0],
-                        comments: comments, user: req.user,subjects: subjects.subjects});
+                    findTeacherSubjects.then(function (teacherSubjects) {
+                        if(teacherSubjects==null){teacherSubjects={}};
+                        res.render('single',{page: page,
+                            school: school,
+                            article: article[0],
+                            comments: comments,
+                            user: req.user,
+                            teacherSubjects:teacherSubjects,
+                            subjects: subjects.subjects});
+                    })
                 })
-
-            });
-        });
+            })
+        })
     }else{
         res.redirect('../courses/logIn');
     }
@@ -364,6 +402,7 @@ app.get('/subject/:id', function (req, res) {
     if(req.user){
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         userSubjects.then(function (subjects) {
             if(subjects==null){subjects={}}
             var findSubject = subjectsManager.findSubject(id);
@@ -374,15 +413,21 @@ app.get('/subject/:id', function (req, res) {
 
                 var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
                 subjectPosts.then(function (posts) {
-                    res.render('subject',{  page: page,
-                                            school: school,
-                                            posts: posts.posts,
-                                            user:req.user,
-                                            userSubjects: subjects.subjects,
-                                            subject:subject});
-                });
-            });
-        });
+                    findTeacherSubjects.then(function (teacherSubjects) {
+                        if (teacherSubjects == null) {teacherSubjects = {}}
+                        res.render('subject', {
+                            page: page,
+                            school: school,
+                            posts: posts.posts,
+                            user: req.user,
+                            teacherSubjects:teacherSubjects,
+                            userSubjects: subjects.subjects,
+                            subject: subject
+                        })
+                    })
+                })
+            })
+        })
     }else{
         res.redirect('../courses/logIn');
     }
@@ -403,7 +448,6 @@ app.get('/deleteSubject/:idS',function (req,res) {
 
 app.get('/deleteSubjectPost/:idP',function (req,res) {
     if(req.user && (req.user.teacher || req.user.admin)){
-        var idS = req.params.idS;
         var idP = req.params.idP;
         subjectsManager.deleteSubjectPost(idP,commentsManager);
         res.redirect('../courses/allSubjects');
@@ -430,6 +474,7 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
         var idPost = req.params.idPost;
         var findComments = commentsManager.getComments(idPost);
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         findComments.then(function (comments) {
             userSubjects.then(function (subjects) {
                 if(subjects==null){subjects={}}
@@ -441,13 +486,17 @@ app.get('/subjectPost/:idSubject/:idPost', function (req, res) {
                     var subjectPosts = subjectsManager.getSubjectPosts(subject.year,subject.name);
                     subjectPosts.then(function (posts) {
                         var post = subjectsManager.findOnePostInPost(idPost,posts.posts);
-                        res.render('subjectPost',{  page: page,
-                                                    school: school,
-                                                    post: post,
-                                                    user:req.user,
-                                                    userSubjects: subjects.subjects,
-                                                    subject:subject,
-                                                    comments:comments});
+                        findTeacherSubjects.then(function(teacherSubjects){
+                            if(teacherSubjects==null){teacherSubjects={}}
+                            res.render('subjectPost',{  page: page,
+                                school: school,
+                                post: post,
+                                user:req.user,
+                                teacherSubjects: teacherSubjects,
+                                userSubjects: subjects.subjects,
+                                subject:subject,
+                                comments:comments});
+                        })
                     });
                 });
             });
@@ -461,14 +510,21 @@ app.get('/nuevoPostMateria/:id', function (req, res) {
     if(req.user && req.user.teacher){
         var id = req.params.id;
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         userSubjects.then(function (subjects) {
             if(subjects==null){subjects={}};
-            res.render('formularioSubject',{page: page,
-                                            school: school,
-                                            id:id,
-                                            userSubjects: subjects.subjects,
-                                            user:req.user});
-        });
+            findTeacherSubjects.then(function(teacherSubjects) {
+                if (teacherSubjects == null) {teacherSubjects = {}}
+                res.render('formularioSubject', {
+                    page: page,
+                    school: school,
+                    id: id,
+                    teacherSubjects: teacherSubjects,
+                    userSubjects: subjects.subjects,
+                    user: req.user
+                })
+            })
+        })
     }else{
         res.redirect('../courses/logIn');
     }
@@ -508,10 +564,20 @@ app.get('/borrarArticulo/:id', function (req, res) {
 app.get('/courses/nuevoArticulo', function (req, res) {
     if(req.user) {
         var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         userSubjects.then(function (subjects) {
             if(subjects==null){subjects={}};
-            res.render('formularioArticulo',{page: page, school: school,userSubjects: subjects.subjects, user: req.user});
-        });
+            findTeacherSubjects.then(function(teacherSubjects) {
+                if (teacherSubjects == null) {teacherSubjects = {}}
+                res.render('formularioArticulo', {
+                    page: page,
+                    school: school,
+                    teacherSubjects:teacherSubjects,
+                    userSubjects: subjects.subjects,
+                    user: req.user
+                })
+            })
+        })
     }else{
         res.redirect('../courses/logIn');
     }
@@ -533,11 +599,22 @@ app.get('/courses/allSubjects',function(req,res){
     if(req.user && req.user.admin){
         var getsubjects = subjectsManager.getSubjects();
         var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         getsubjects.then(function(subjects){
-            findUserSubjects.then(function(userSubjects){
-                if(userSubjects==null){userSubjects={}};
-                res.render('allSubjects',{user:req.user,school:school,page:page,subjects:subjects,userSubjects: userSubjects.subjects})
-            });
+            findUserSubjects.then(function(userSubjects) {
+                findTeacherSubjects.then(function (teacherSubjects) {
+                    if (teacherSubjects == null) {teacherSubjects = {}}
+                    if (userSubjects == null) {userSubjects = {}}
+                    res.render('allSubjects', {
+                        user: req.user,
+                        school: school,
+                        page: page,
+                        subjects: subjects,
+                        teacherSubjects:teacherSubjects,
+                        userSubjects: userSubjects.subjects
+                    })
+                });
+            })
         })
     }else{
         res.redirect('../courses');
@@ -550,7 +627,7 @@ app.get('/courses/newSubject', function (req, res) {
     if(req.user && req.user.admin) {
         var findTeachers = users.getProfesors();
         findTeachers.then(function (teachers) {
-            findUserSubjects = subjectsManager.getUserSubjects(req.user);
+            var findUserSubjects = subjectsManager.getUserSubjects(req.user);
             findUserSubjects.then(function (userSubjects) {
                 if(userSubjects==null){userSubjects={}};
                 res.render('formularioNewSubject',{page: page, school: school,user: req.user,teachers:teachers,userSubjects: userSubjects.subjects});
