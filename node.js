@@ -129,10 +129,9 @@ app.get('/courses/years',function (req,res) {
     if(req.user && req.user.teacher){
         var findUserSubjects = subjectsManager.getUserSubjects(req.user);
         var findSubjects = subjectsManager.getSubjects();
-
         findUserSubjects.then(function (userSubjects) {
             if(userSubjects==null){userSubjects={}}
-            findSubjects.then(function (subjects) {
+            findSubjects.then(function (subjects){
                 res.render('years',{page: page,
                                     school: school,
                                     users: users,
@@ -150,49 +149,89 @@ app.get('/courses/years',function (req,res) {
 app.get('/courses/years/:year/:idS',function(req,res) {
     if(req.user) {
         var year = req.params.year;
-        var idS = req.params.year;
+        var idS = req.params.idS;
         var findUsersInYear = users.getUsersInYear(year);
         var userGrades = gradesManager.getUserGrades(req.user._id);
         var findUserSubjects = subjectsManager.getUserSubjects(req.user);
-        findUsersInYear.then(function (students) {
-            userGrades.then(function(userGrades){
-                if (userGrades==null){userGrades={}}
-                findUserSubjects.then(function (userSubjects) {
-                    if (userSubjects==null){userSubjects={}}
-                    res.render('studentsPerYear',{  page: page,
-                                                    school: school,
-                                                    user: req.user,
-                                                    userGrades: userGrades,
-                                                    userSubjects: userSubjects.subjects,
-                                                    students: students});
+        var findSubject = subjectsManager.findSubject(idS);
+        findSubject.then(function (subject) {
+            var subject = _.find(subject.subjects, function (subject) {
+                return subject['_id'] == idS;
+            });
+            findUsersInYear.then(function (students) {
+                userGrades.then(function (userGrades) {
+                    if (userGrades == null) {userGrades = {}}
+                    findUserSubjects.then(function (userSubjects) {
+                        if (userSubjects == null) {userSubjects = {}}
+                        res.render('studentsPerYear', {
+                            page: page,
+                            school: school,
+                            user: req.user,
+                            userGrades: userGrades,
+                            userSubjects: userSubjects.subjects,
+                            subject: subject,
+                            students: students
+                        });
+                    })
                 })
             })
-        })
+        });
     }else {
         res.render('logIn', {page: page});
     }
 });
 
-
-
-
-app.post('/courses/newGrade',function (req,res) {
+app.get('/courses/newGrade/:idS/:idU',function (req,res) {
+    console.log("hola")
     if(req.user && req.user.teacher){
-        var id = req.params.id;
+        var idS = req.params.idS;
+        var idU = req.params.idU;
+        var findSubject = subjectsManager.findSubject(idS);
         var userSubjects = subjectsManager.getUserSubjects(req.user);
-        userSubjects.then(function (subjects) {
-            if(subjects==null){subjects={}};
-            res.render('formularioSubject',{page: page,
-                school: school,
-                id:id,
-                userSubjects: subjects.subjects,
-                user:req.user});
+        var findUser = users.getUser(idU);
+        findSubject.then(function (subject) {
+            var subject = _.find(subject.subjects, function (subject) {
+                return subject['_id'] == idS;
+            });
+            userSubjects.then(function (subjects) {
+                if(subjects==null){subjects={}}
+                findUser.then(function (student) {
+                    res.render('formularioNota', {
+                        page: page,
+                        school: school,
+                        student:student,
+                        subject: subject,
+                        userSubjects: subjects.subjects,
+                        user: req.user
+                    });
+                });
+            });
         });
     }else{
         res.redirect('../courses/logIn');
     }
 });
 
+app.post('/courses/newGrade/:idS/:idU/:year',function (req,res) {
+    if(req.user && req.user.teacher) {
+        var year = req.params.year;
+        var idS = req.params.idS;
+        var idU = req.params.idU;
+        var findSubject = subjectsManager.findSubject(idS);
+        var findUser = users.getUser(idU);
+        findSubject.then(function (subject) {
+            var subject = _.find(subject.subjects, function (subject) {
+                return subject['_id'] == idS;
+            });
+            findUser.then(function (user) {
+                gradesManager.addGrade(user, subject, req.body);
+                res.redirect('../../../../courses/years/'+year+'/'+idS);
+            })
+        })
+    }else{
+        res.redirect('../');
+    }
+});
 
 app.post('/courses/logIn', passport.authenticate('local',{
     successRedirect: '../courses',

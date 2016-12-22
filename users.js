@@ -55,6 +55,10 @@ module.exports = {
         return users.find({year:year})
     },
 
+    getUser:function (idU) {
+        return users.findOne({_id:idU})
+    },
+
     authenticateUser: function (body,res) {
         var token;
         users.findOne({name:body.name},function (err,user) {

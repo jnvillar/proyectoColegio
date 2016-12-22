@@ -1,6 +1,6 @@
 var SchemGrade;
 var SchemUserGrades;
-var grades;
+var grade;
 var userGrades;
 
 module.exports = {
@@ -11,8 +11,8 @@ module.exports = {
             subject: String,
             idS: String,
             value: Number,
-            name: String
-
+            name: String,
+            idU: String
         });
 
         SchemUserGrades = db.Schema({
@@ -21,22 +21,24 @@ module.exports = {
         });
 
         userGrades = db.model('userGrades',SchemUserGrades);
-        grades = db.model('grades',SchemUserGrades);
+        grade = db.model('grades',SchemGrade);
     },
 
     getUserGrades: function(idUser){
-        return grades.findOne({idUser:idUser})
+        return userGrades.findOne({idUser:idUser})
     },
 
-    addGrade: function (idUser,subject,year,idSubject,gradeValue, gradeName) {
-        var newGrade = newGrade({year: year, subject: subject, idS: idSubject, value:gradeValue, name:gradeName});
-
-        grades.findOne({idUser:idUser},function (err,res) {
+    addGrade: function (user,subject,body) {
+        var newGrade = new grade({year: subject.year, subject: subject.name, idS: subject._id, value:body.gradeValue, name:body.gradeName, idU: user._id});
+        userGrades.findOne({idUser:user._id},function (err,res) {
+            if(err){console.log("que paso")}
             if(res){
                 res.grades.push(newGrade);
                 res.save();
             }else{
-                var newUserGrades = new userGrades({idUser:idUser,grades:[newGrade]})
+                var grades = [];
+                grades.push(newGrade);
+                var newUserGrades = new userGrades({idUser:user._id,grades:grades});
                 newUserGrades.save();
             }
         })

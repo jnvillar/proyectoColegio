@@ -2,12 +2,11 @@
 <html>
 <head>
     <title>{{school.name}}</title>
+    <base href="/">
     <link href="../css/bootstrapCourses.css" rel='stylesheet' type='text/css' />
     <link href="../css/styleCourses.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-
     <meta name="keywords" content=""/>
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
@@ -24,7 +23,7 @@
             });
         });
     </script>
-    <script src="../ckeditor/ckeditor.js"></script>
+
 
 </head>
 <body>
@@ -67,7 +66,7 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
-                    <form id="articleForm" action="../courses/nuevoArticulo" method="POST">
+                    <form id="articleForm" action="../courses/newGrade/{{subject._id}}/{{student._id}}/{{subject.year}}" method="POST">
 
                         <div id="input" style="margin-bottom: 2%">
                             <label for="titulo">Nombre:</label><br />
@@ -103,9 +102,7 @@
 
                         </script>
 
-
-
-                        <input id="submit_button"  style="margin-bottom: 2% "type="submit" value="Mandar Articulo" />
+                        <input id="submit_button"  style="margin-bottom: 2% "type="submit" value="Agregarle Nota a {{student.name}}" />
 
                     </form>
                 </div>
