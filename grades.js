@@ -27,6 +27,22 @@ module.exports = {
     getUserGrades: function(idUser){
         return userGrades.findOne({idUser:idUser})
     },
+    
+    modifyGrade: function (idUser,idGrade,body) {
+        var findUserGrades = this.getUserGrades(idUser);
+        findUserGrades.then(function (studentGrades) {
+            if(studentGrades) {
+                for (var i = 0; i < studentGrades.grades.length; i++) {
+                    if (studentGrades.grades[i]._id == idGrade) {
+                        studentGrades.grades[i].value = body.gradeValue;
+                        studentGrades.grades[i].name = body.gradeName;
+                        studentGrades.save();
+                        break
+                    }
+                }
+            }
+        });
+    },
 
     addGrade: function (user,subject,body) {
         var newGrade = new grade({year: subject.year, subject: subject.name, idS: subject._id, value:body.gradeValue, name:body.gradeName, idU: user._id});

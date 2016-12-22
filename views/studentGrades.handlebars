@@ -63,32 +63,23 @@
         <div class="content-grids">
             <div class="col-md-8 single-main">
                 <div id="subject_title">
-                    <p> Alumnos  </p>
+                    <p> Notas de {{student.name}}  </p>
                 </div>
-
                 <div class="content-grid">
-
-
-                        <div id="postSubject">
-
-                            <table style="width:70%">
-
-                                {{#students}}
+                    <div id="postSubject">
+                        <table style="width:100%">
+                            {{#studentGrades}}
                                 <tr>
-                                    {{#isStudent teacher admin}}
                                     <td>{{name}}</td>
-                                    <td> <a href="../courses/newGrade/{{../subject._id}}/{{_id}}"> Agregar Nota </a></td>
-                                    <td> <a href="../courses/getGrades/{{../subject.id}}/{{_id}}"> Ver Notas </a></td>
-                                    {{/isStudent}}
+                                    <td>{{value}}</td>
+                                    <td> <a href="../courses/modifyGrade/{{_id}}/{{../student._id}}/{{../subject.idS}}">Modificar Nota</a></td>
                                 </tr>
-                                {{/students}}
-                            </table>
-                        </div>
+                            {{/studentGrades}}
+                        </table>
+                    </div>
                 </div>
-
                 </div>
             </div>
-
 
             <div class="col-md-4 content-right">
                 <div class="recent">

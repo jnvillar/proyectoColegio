@@ -20,16 +20,23 @@ var hbs = exphbs.create({
                 }
             }
             return options.inverse(this);
+        },
+        isStudent:function(teacher,admin,options){
+            if(teacher || admin){
+                return options.inverse(this);
+            }else{
+                return options.fn(this);
+            }
         }
-
     }
 });
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/prueba');
 
+mongoose.connect('mongodb://localhost/prueba');
 /*
+
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
@@ -62,6 +69,7 @@ var subjectsManager = require('./subjects');
 subjectsManager.start(mongoose);
 var users = require('./users');
 users.start(mongoose,passport);
+
 /*
 users.createUser('alu','alu',false,"6to Año A",false);
  users.createUser('admin','admin',true,"6to Año A","",false);
@@ -146,6 +154,7 @@ app.get('/courses/years',function (req,res) {
 });
 
 
+
 app.get('/courses/years/:year/:idS',function(req,res) {
     if(req.user) {
         var year = req.params.year;
@@ -159,30 +168,25 @@ app.get('/courses/years/:year/:idS',function(req,res) {
                 return subject['_id'] == idS;
             });
             findUsersInYear.then(function (students) {
-                userGrades.then(function (userGrades) {
-                    if (userGrades == null) {userGrades = {}}
                     findUserSubjects.then(function (userSubjects) {
                         if (userSubjects == null) {userSubjects = {}}
                         res.render('studentsPerYear', {
                             page: page,
                             school: school,
                             user: req.user,
-                            userGrades: userGrades,
                             userSubjects: userSubjects.subjects,
                             subject: subject,
                             students: students
                         });
                     })
                 })
-            })
-        });
+            });
     }else {
         res.render('logIn', {page: page});
     }
 });
 
 app.get('/courses/newGrade/:idS/:idU',function (req,res) {
-    console.log("hola")
     if(req.user && req.user.teacher){
         var idS = req.params.idS;
         var idU = req.params.idU;
@@ -232,6 +236,86 @@ app.post('/courses/newGrade/:idS/:idU/:year',function (req,res) {
         res.redirect('../');
     }
 });
+
+app.get('/courses/getGrades/:idS/:idU',function (req,res) {
+    if(req.user && req.user.teacher){
+        var idU = req.params.idU;
+        var idS = req.params.idS;
+        var findGrades = gradesManager.getUserGrades(idU,idS);
+        var findUser = users.getUser(idU);
+        var findUserSubjects = subjectsManager.getUserSubjects(req.user);
+        findGrades.then(function (studentGrades) {
+            var grades = [];
+            for (var i = 0; i < studentGrades.grades.length; i++) {
+                if (studentGrades.grades[i].idS == idS) {
+                    grades.push(studentGrades.grades[i]);
+                }
+            }
+            findUser.then(function (student) {
+                findUserSubjects.then(function (userSubjects) {
+                    if(userSubjects==null){userSubjects={}}
+                    res.render('studentGrades', {
+                        page: page,
+                        school: school,
+                        student:student,
+                        subject: {idS:idS},
+                        studentGrades:grades,
+                        userSubjects: userSubjects.subjects,
+                        user: req.user})
+                });
+            });
+        })
+    }else{
+        res.redirect('../../../');
+    }
+});
+
+
+app.get('/courses/modifyGrade/:idG/:idU/:idS',function (req,res) {
+    if(req.user && req.user.teacher){
+        var idG = req.params.idG;
+        var idU = req.params.idU;
+        var idS = req.params.idS;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findUser = users.getUser(idU);
+        userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}}
+            findUser.then(function (student) {
+                res.render('formularioModificarNota', {
+                    page: page,
+                    school: school,
+                    student:student,
+                    subject:{idS:idS},
+                    grade:{idG:idG},
+                    userSubjects: subjects.subjects,
+                    user: req.user
+                });
+            });
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
+app.post('/courses/modifyGrade/:idG/:idU/:idS',function (req,res) {
+    if(req.user && req.user.teacher){
+        var idG = req.params.idG;
+        var idU = req.params.idU;
+        var idS = req.params.idS;
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findUser = users.getUser(idU);
+        userSubjects.then(function (subjects) {
+            if(subjects==null){subjects={}}
+            findUser.then(function (student) {
+                gradesManager.modifyGrade(student._id,idG,req.body);
+                res.redirect('../../../getGrades/'+idS+'/'+idU);
+            });
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
 
 app.post('/courses/logIn', passport.authenticate('local',{
     successRedirect: '../courses',
