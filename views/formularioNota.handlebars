@@ -66,10 +66,14 @@
             <div class="col-md-8 content-main">
                 <div class="content-grid">
 
+                    <div id="subject_title">
+                        <p> Agregar Nota:  </p>
+                    </div>
+
                     <form id="articleForm" action="../courses/newGrade/{{subject._id}}/{{student._id}}/{{subject.year}}" method="POST">
 
                         <div id="input" style="margin-bottom: 2%">
-                            <label for="titulo">Nombre:</label><br />
+                            <label for="titulo">Nombre de la calificación</label><br />
                             <input id="titulo" class="input" name="gradeName" type="text" value="" size="30" required/><br />
                         </div>
 

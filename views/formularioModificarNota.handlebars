@@ -65,15 +65,20 @@
         <div class="content-grids">
             <div class="col-md-8 content-main">
                 <div class="content-grid">
+
+                    <div id="subject_title">
+                        <p> Modificar nota de {{student.name}}  </p>
+                    </div>
+
                     <form id="articleForm" action="../courses/modifyGrade/{{grade.idG}}/{{student._id}}/{{subject.idS}}" method="POST">
 
                         <div id="input" style="margin-bottom: 2%">
-                            <label for="titulo">Nombre:</label><br />
+                            <label for="titulo">Nuevo nombre de la calificacion</label><br />
                             <input id="titulo" class="input" name="gradeName" type="text" value="" size="30" required/><br />
                         </div>
 
                         <div id="input">
-                            <label for="titulo">Calificación</label><br />
+                            <label for="titulo">Nueva calificación</label><br />
                             <input list="subjects" id="titulo" class="input" name="gradeValue" type="text" value="" size="30" required><br />
                             <datalist id="subjects">
                                 <option value="10">
@@ -101,7 +106,7 @@
 
                         </script>
 
-                        <input id="submit_button"  style="margin-bottom: 2% "type="submit" value="Modificar Nota a {{student.name}}" />
+                        <input id="submit_button"  style="margin-bottom: 2% "type="submit" value="Modificar Nota" />
 
                     </form>
                 </div>
