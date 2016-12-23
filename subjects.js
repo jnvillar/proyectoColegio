@@ -178,15 +178,8 @@ module.exports = {
         });
     },
 
-    getSubjectPosts: function (year,name) {
-        //console.log(year,name);
-        return postSubject.findOne({year:year,subjectName:name},function (err,res) {
-            if(res){
-                //console.log("encontre los posts")
-            }
-        });
-
-
+    getSubjectPosts: function (idS) {
+        return postSubject.findOne({idS:idS});
     },
 
     findOnePostInPost: function(idP,buscar){
