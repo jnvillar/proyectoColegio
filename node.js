@@ -142,7 +142,7 @@ app.get('/courses/students',function(req,res){
         var findStudents = users.getStudents()
         findStudents.then(function (students) {
             if(students==null){students={}}
-            studentPerYear = _.groupBy(students,'year');
+            var studentPerYear = _.groupBy(students,'year');
             console.log(studentPerYear);
             res.render('students',{ page: page,
                                     school: school,
