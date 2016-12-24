@@ -42,6 +42,7 @@ var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
 mongoose.connect(mongodbUri, options);
 
+
 var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
 
@@ -145,6 +146,7 @@ app.get('/apiArticles',function(req,res){
     }
 });
 
+
 app.get('/apiAllSubjects',function(req,res){
     if(req.user && (req.user.admin || req.user.teacher)) {
         var findAllSubjects = subjectsManager.getSubjects();
@@ -155,6 +157,7 @@ app.get('/apiAllSubjects',function(req,res){
         res.redirect('../')
     }
 });
+
 
 app.get('/apiSubjectPosts/:idS',function (req,res) {
     if(req.user) {
@@ -167,6 +170,7 @@ app.get('/apiSubjectPosts/:idS',function (req,res) {
         res.redirect('../')
     }
 });
+
 
 app.get('/apiSubjectPost/:idS/:idP',function (req,res) {
     if(req.user) {
@@ -195,6 +199,7 @@ app.get('/apiStudentsInYear/:year',function(req,res){
     }
 });
 
+
 app.get('/apiComments/:idP',function (req,res) {
     var idP = req.params.idP;
     if(req.user) {
@@ -207,7 +212,6 @@ app.get('/apiComments/:idP',function (req,res) {
     }
 });
 
-
 app.get('/apiArticle/:idP',function (req,res) {
     var idP = req.params.idP;
     if(req.user) {
@@ -219,6 +223,7 @@ app.get('/apiArticle/:idP',function (req,res) {
         res.redirect('../')
     }
 });
+
 
 app.get('/apiAllStudents',function (req,res) {
     if(req.user && (req.user.teacher || req.user.admin)) {
@@ -643,6 +648,30 @@ app.get("/voteComment/:idC/:vote",function(req,res){
 /* LO DE ABAJO NO ES API */
 /* LO DE ABAJO NO ES API */
 
+app.get('/courses', function (req, res) {
+    if(req.user) {
+        var articles = articleManager.getArticles();
+        var userSubjects = subjectsManager.getUserSubjects(req.user);
+        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
+        articles.then(function (articles) {
+            userSubjects.then(function (subjects) {
+                if(subjects==null){subjects={}};
+                findTeacherSubjects.then(function (teacherSubjects) {
+                    if(teacherSubjects==null){teacherSubjects={}}
+                    res.render('indexCoursesNew',{ school:school,
+                        articles:articles.reverse(),
+                        page:page,
+                        teacherSubjects: teacherSubjects,
+                        subjects:subjects.subjects,
+                        user:req.user});
+                })
+            });
+        });
+    }else{
+        res.redirect('../courses/logIn');
+    }
+});
+
 
 app.get('/courses/students',function(req,res){
     if(req.user && req.user.admin){
@@ -745,29 +774,7 @@ app.get('/courses/getGrades/:idS/:idU',function (req,res) {
     }
 });
 
-app.get('/courses', function (req, res) {
-    if(req.user) {
-        var articles = articleManager.getArticles();
-        var userSubjects = subjectsManager.getUserSubjects(req.user);
-        var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
-        articles.then(function (articles) {
-            userSubjects.then(function (subjects) {
-                if(subjects==null){subjects={}};
-                findTeacherSubjects.then(function (teacherSubjects) {
-                    if(teacherSubjects==null){teacherSubjects={}}
-                    res.render('indexCourses',{ school:school,
-                                                articles:articles.reverse(),
-                                                page:page,
-                                                teacherSubjects: teacherSubjects,
-                                                subjects:subjects.subjects,
-                                                user:req.user});
-                })
-            });
-        });
-    }else{
-        res.redirect('../courses/logIn');
-    }
-});
+
 
 app.get('/article/:id', function (req, res) {
     if(req.user){
