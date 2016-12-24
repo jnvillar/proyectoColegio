@@ -672,7 +672,7 @@ app.get('/courses', function (req, res) {
     }
 });
 
-app.get('courses2'){
+app.get('/courses2'){
     res.sendFile(path.join(__dirname+'/coursesx.html'));
 }
 
