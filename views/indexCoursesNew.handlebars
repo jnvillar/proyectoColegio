@@ -74,7 +74,15 @@
                                         success: function(data) {
                                             var res = jQuery.parseJSON(data);
                                             $.each(res,function (key,value) {
-                                                $('#prueba').append('<p> Name: ' + value + '</p>');
+                                                var li = $('<li/>')
+                                                        .addClass('subjectList');
+                                                var a = $('<a/>')
+                                                        .data("hpña");
+                                                var title = $('<h3/>')
+                                                        .data(data.name);
+                                                a.append(title);
+                                                li.append(a);
+                                                $('links').append(li);
                                             });
                                         },
                                     })

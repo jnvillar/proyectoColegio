@@ -115,18 +115,18 @@ app.use(passport.session());
 app.get('/apiUserSubjects',function(req,res){
    if(req.user){
        var findUserSubjects;
-       if(req.user.admin){
+       if(req.user.admin && !req.user.teacher){
            findUserSubjects = subjectsManager.getUserSubjects(req.user);
        }
        else if(req.user.teacher){
-           findUserSubjects = subjectsManager.getTeacherSubjects(req.user);
+           findUserSubjects = subjectsManager.getTeacherSubjects(req.user.name);
        }
-       else{
+       else if(!req.user.admin && !req.user.teacher){
            findUserSubjects = subjectsManager.getUserSubjects(req.user);
        }
 
        findUserSubjects.then(function (userSubjects) {
-           if (findUserSubjects == null){findUserSubjects ={}}
+           if (userSubjects == null){userSubjects ={}}
            res.send(JSON.stringify(userSubjects))
        })
    }else{
@@ -655,10 +655,10 @@ app.get('/courses', function (req, res) {
         var findTeacherSubjects = subjectsManager.getTeacherSubjects(req.user.name);
         articles.then(function (articles) {
             userSubjects.then(function (subjects) {
-                if(subjects==null){subjects={}};
+                if(subjects==null){subjects={}}
                 findTeacherSubjects.then(function (teacherSubjects) {
                     if(teacherSubjects==null){teacherSubjects={}}
-                    res.render('indexCoursesNew',{ school:school,
+                    res.render('indexCourses',{ school:school,
                         articles:articles.reverse(),
                         page:page,
                         teacherSubjects: teacherSubjects,
@@ -679,7 +679,6 @@ app.get('/courses/students',function(req,res){
         findStudents.then(function (students) {
             if(students==null){students={}}
             var studentPerYear = _.groupBy(students,'year');
-            console.log(studentPerYear);
             res.render('students',{ page: page,
                                     school: school,
                                     students: studentPerYear,
