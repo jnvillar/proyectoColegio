@@ -648,6 +648,7 @@ app.get("/voteComment/:idC/:vote",function(req,res){
 /* LO DE ABAJO NO ES API */
 /* LO DE ABAJO NO ES API */
 
+/*
 app.get('/courses', function (req, res) {
     if(req.user) {
         var articles = articleManager.getArticles();
@@ -671,11 +672,12 @@ app.get('/courses', function (req, res) {
         res.redirect('../courses/logIn');
     }
 });
-/*
-app.get('/coursesx'){
-    console.log("sss");
-    //res.sendFile(path.join(__dirname + '/coursesx.html'));
-}*/
+*/
+
+
+app.get('/courses',function(req,res){
+    res.sendFile(path.join(__dirname + '/coursesx.html'));
+});
 
 app.get('/courses/students',function(req,res){
     if(req.user && req.user.admin){

@@ -16,20 +16,35 @@
 		<!-- libreria jQuery hosteada por google-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-
 		<!-- script jquery: -->
 		<script>
 		$( document ).ready(function() { // cuando la web ya esta cargada ejecuta esto:
-
 		    $.get( "/apiUserSubjects", function( jsonPiola ) {
+		      arrayParseado = JSON.parse( jsonPiola ); // jsonPiola es un string, lo transformo a Json
 		      var contenido = '<ul>';
-			  contenido += '<ul class="links"><h2> Materias de 6to año </h2>';
-			  contenido += '<li><a href="#"><h3>Materia1</h3><p>parrafoMenu1</p></a></li>';
-			  contenido += '</ul>';
+		      var i = 0;
+		      var j = 0;
+		      while( i < arrayParseado.length ){
+		            contenido += '<ul class="links">';
+		            contenido += '<h2> Materias de: ' + arrayParseado[i].year + '</h2>';
+		        while( j < arrayParseado[i].subjects.length ){
+		        	contenido += '<li>';
+		        	contenido += '<h3>' + (arrayParseado[i].subjects[j]).name + '</h3>';
+		        	contenido += '<p> Profesor: ' + (arrayParseado[i].subjects[j]).profesor +'</p>';
+		        	contenido += '<p> imgProfesor: ' + (arrayParseado[i].subjects[j]).imgProfesor +'</p>';
+		        	contenido += '<p> img: ' + (arrayParseado[i].subjects[j]).img +'</p>';
+		        	contenido += '<p> content: ' + (arrayParseado[i].subjects[j]).content +'</p>';
+		        	contenido += '<p> year: ' + (arrayParseado[i].subjects[j]).year +'</p>';
+		        	contenido += '</li>';
+		        	j++;
+		        }
+			    contenido += '</ul>';
+			    j=0;
+		      	i++
+		      }
 		      $( "#menuMateriasShow" ).html( contenido );
 		    }); // fin get method.
 		});// fin ready document
-
 		</script>
 
 
@@ -110,8 +125,8 @@
 							<section>
 								<ul class="actions vertical">
 									<li><a href="#" class="button big fit">Perfil De Usuario</a></li>
-										<li><img src="images/face2.jpg" alt="Mountain View" style="width:304px;height:228px;">
-									</li>
+										<!--<li><img src="images/face2.jpg" alt="Mountain View" style="width:304px;height:228px;"></li>-->
+									<li>datos del usuario traidos por Json</li>
 								</ul>
 							</section>
 
