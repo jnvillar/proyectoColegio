@@ -672,6 +672,9 @@ app.get('/courses', function (req, res) {
     }
 });
 
+app.get('courses2'){
+    res.sendFile(path.join(__dirname+'/coursesx.html'));
+}
 
 app.get('/courses/students',function(req,res){
     if(req.user && req.user.admin){
