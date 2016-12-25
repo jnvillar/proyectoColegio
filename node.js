@@ -34,14 +34,14 @@ var hbs = exphbs.create({
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-//mongoose.connect('mongodb://localhost/prueba');
+mongoose.connect('mongodb://localhost/prueba');
 
-
+/*
 var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
     replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 var mongodbUri = 'mongodb://heroku_ktbs5cjz:ccf1s2kjfpdmvon8br6r0l4ltl@ds133398.mlab.com:33398/heroku_ktbs5cjz';
 mongoose.connect(mongodbUri, options);
-
+*/
 
 var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
@@ -648,7 +648,7 @@ app.get("/voteComment/:idC/:vote",function(req,res){
 /* LO DE ABAJO NO ES API */
 /* LO DE ABAJO NO ES API */
 
-/*
+
 app.get('/courses', function (req, res) {
     if(req.user) {
         var articles = articleManager.getArticles();
@@ -659,7 +659,7 @@ app.get('/courses', function (req, res) {
                 if(subjects==null){subjects={}}
                 findTeacherSubjects.then(function (teacherSubjects) {
                     if(teacherSubjects==null){teacherSubjects={}}
-                    res.render('indexCourses',{ school:school,
+                    res.render('indexCoursesNew',{ school:school,
                         articles:articles.reverse(),
                         page:page,
                         teacherSubjects: teacherSubjects,
@@ -672,12 +672,14 @@ app.get('/courses', function (req, res) {
         res.redirect('../courses/logIn');
     }
 });
-*/
 
 
+/*
 app.get('/courses',function(req,res){
     res.sendFile(path.join(__dirname + '/coursesx.html'));
 });
+*/
+
 
 app.get('/courses/students',function(req,res){
     if(req.user && req.user.admin){
