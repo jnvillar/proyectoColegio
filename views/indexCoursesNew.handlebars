@@ -45,7 +45,7 @@
             $.get( "/apiArticles", function( json ) {
                 articles = JSON.parse( json );
                 var i=0;
-                var contenido;
+                var contenido = '';
                 while(i<articles.length) {
                     contenido += '<article class="post">';
 
