@@ -60,11 +60,11 @@
                         contenido += '</div>';
                     contenido += '</header>';
 
-                    contenido += '<div style="word-wrap: break-word; display: block; width: inherit">'+articles[i].content.substring(0,100)+'</div>';
+                    contenido += '<div style="word-wrap: break-word; display: block; width: inherit">'+articles[i].content+'</div>';
 
                     contenido += '<footer>';
                         contenido += '<ul class="actions">';
-                        contenido += '<li><a href="#" class="button big">Seguir Leyendo...</a></li>';
+                        contenido += '<li><a href="javascript:loadArticle('+articles[i]._id+')" class="button big">Seguir Leyendo...</a></li>';
                         contenido += '</ul>';
 
                         contenido += '<ul class="stats">';
@@ -85,6 +85,40 @@
                 $( "#main" ).html( contenido );
             });
 		});// fin ready document
+
+
+        function loadArticle(idPost){
+            $.get('../apiArticle/' + idPost, function (json) {
+                noticia = JSON.parse(json);
+                noticia = noticia[0];
+                contenido = '';
+                contenido += '<article class="post">';
+
+                contenido += '<header>';
+                contenido += '<div class="title">';
+                contenido += '<h2><a href="#">' + noticia.title + '</a></h2>';
+                contenido += '</div>';
+
+                contenido += '<div class="meta">';
+                contenido += '<time class="published" datetime="2015-11-01"> falta guardar fecha</time>';
+                contenido += '<a href="#" class="author"><span class="name" >' + noticia.author + '</span></a>';
+                contenido += '</div>';
+                contenido += '</header>';
+
+                contenido += '<div style="word-wrap: break-word; display: block; width: inherit">' + noticia.content + '</div>';
+
+                contenido += '<footer>';
+                contenido += '<ul class="stats">';
+                contenido += '<li><a href="#">Visitas 2200</a></li>';
+                contenido += '<li><a href="#" class="icon fa-heart">28</a></li>';
+                contenido += '<li><a href="#" class="icon fa-comment">128</a></li>';
+                contenido += '</ul>';
+
+                contenido += '</footer>';
+                contenido += '</article>';
+                $("#main").html(contenido);
+            })
+        }
 		</script>
 
 

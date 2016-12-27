@@ -796,7 +796,7 @@ app.get('/article/:id', function (req, res) {
                     if(subjects==null){subjects={}};
                     findTeacherSubjects.then(function (teacherSubjects) {
                         if(teacherSubjects==null){teacherSubjects={}};
-                        res.render('single',{page: page,
+                        res.render('newSingle',{page: page,
                             school: school,
                             article: article[0],
                             comments: comments,
