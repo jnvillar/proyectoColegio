@@ -7,6 +7,47 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="../js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="../css/styleNew.css" />
+		<STYLE>
+			 
+				.ui-btn-left  {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #768d87), color-stop(1, #6c7c7c));
+	background:-moz-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-webkit-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-o-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:-ms-linear-gradient(top, #768d87 5%, #6c7c7c 100%);
+	background:linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#768d87', endColorstr='#6c7c7c',GradientType=0);
+	background-color:#768d87;
+	-moz-border-radius:22px;
+	-webkit-border-radius:22px;
+	border-radius:22px;
+	border:3px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:22px;
+	padding:11px 48px;
+	text-decoration:none;
+	text-shadow:0px 0px 0px #2b665e;
+}
+.ui-btn-left :hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #6c7c7c), color-stop(1, #768d87));
+	background:-moz-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-webkit-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-o-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:-ms-linear-gradient(top, #6c7c7c 5%, #768d87 100%);
+	background:linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c7c', endColorstr='#768d87',GradientType=0);
+	background-color:#6c7c7c;
+}
+.ui-btn-left :active {
+	position:relative;
+	top:1px;
+}
+
+			
+		</STYLE>
 		<!--[if lte IE 9]><link rel="stylesheet" href="../css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="../css/ie8.css" /><![endif]-->
 		<!-- libreria jQuery hosteada por google-->
@@ -60,7 +101,11 @@
                     contenido += '</div>';
                     contenido += '</header>';
 
-                    contenido += '<div style="word-wrap:break-word;display:block;width:inherit">' + articles[i].content + '</div>';
+                    var textoArticulo = articles[i].content;
+					var porcionArticulo = textoArticulo.substring(0, 100); // 50 caracteres solamente,OJO creo q se rompe si hay menos de 50
+
+
+                    contenido += '<div style="word-wrap:break-word;display:block;width:inherit">' + porcionArticulo + '</div>';
 
                     contenido += '<footer>';
                     contenido += '<ul class="actions">';
@@ -101,8 +146,8 @@
                 noticia = noticia[0];
                 contenido = '';
                 contenido += '<article class="post">';
-
                 contenido += '<header>';
+                 contenido += '<button type="button" onclick="window.history.go(-1); return false;" class="ui-btn-left">Volver Atras</button>';
                 contenido += '<div class="title">';
                 contenido += '<h2><a href="#">' + noticia.title + '</a></h2>';
                 contenido += '</div>';
@@ -112,6 +157,8 @@
                 contenido += '<a href="#" class="author"><span class="name" >' + noticia.author + '</span></a>';
                 contenido += '</div>';
                 contenido += '</header>';
+
+
 
                 contenido += '<div style="word-wrap: break-word; display: block; width: inherit">' + noticia.content + '</div>';
 
