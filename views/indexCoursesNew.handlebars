@@ -15,6 +15,10 @@
 		<!-- script jquery: -->
 		<script>
 		$( document ).ready(function() { // cuando la web ya esta cargada ejecuta esto:
+
+			
+
+
             $.get("/apiUserSubjects", function (json) {
                 arrayParseado = JSON.parse(json);
                 var contenido = '<ul>';
@@ -60,7 +64,13 @@
 
                     contenido += '<footer>';
                     contenido += '<ul class="actions">';
-                    contenido += '<li><a href="#" onclick="'+loadArticle(articles[i]._id)+'" class="button big">Seguir Leyendo...</a></li>';
+                    //href="#" onclick="loadArticle('+articles[i]._id+')"
+                    contenido += '<li><button type="button" id="botonLeerMas'+articles[i]._id+'"  class="button big">Seguir Leyendo...</button></li>';
+                    contenido += '<script>';
+                    contenido += '$( "#botonLeerMas'+articles[i]._id+'" ).click(function() {';
+  				    contenido += 'loadArticle("'+articles[i]._id+'");';
+				    contenido += '});';
+				    contenido += '<'+'/script>';
                     contenido += '</ul>';
 
                     contenido += '<ul class="stats">';
@@ -81,6 +91,7 @@
                 $("#main").html(contenido);
             });
 
+            
 
 		});// fin ready document
 
