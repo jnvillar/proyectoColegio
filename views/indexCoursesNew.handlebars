@@ -56,10 +56,6 @@
 		<!-- script jquery: -->
 		<script>
 		$( document ).ready(function() { // cuando la web ya esta cargada ejecuta esto:
-
-			
-
-
             $.get("/apiUserSubjects", function (json) {
                 arrayParseado = JSON.parse(json);
                 var contenido = '<ul>';
@@ -82,62 +78,6 @@
                 }
                 $("#menuMateriasShow").html(contenido);
             }); // fin get method.
-
-            $.get("/apiArticles", function (json) {
-                articles = JSON.parse(json);
-                var i = 0;
-                var contenido = '';
-                while (i < articles.length) {
-                    contenido += '<article class="post">';
-
-                    contenido += '<header>';
-                    contenido += '<div class="title">';
-                    contenido += '<h2><a href="#">' + articles[i].title + '</a></h2>';
-                    contenido += '</div>';
-
-                    contenido += '<div class="meta">';
-                    contenido += '<time class="published" datetime="2015-11-01"> falta guardar fecha</time>';
-                    contenido += '<a href="#" class="author"><span class="name" >' + articles[i].author + '</span></a>';
-                    contenido += '</div>';
-                    contenido += '</header>';
-
-                    var textoArticulo = articles[i].content;
-					var porcionArticulo = textoArticulo.substring(0, 100); // 50 caracteres solamente,OJO creo q se rompe si hay menos de 50
-
-
-                    contenido += '<div style="word-wrap:break-word;display:block;width:inherit">' + porcionArticulo + '</div>';
-
-                    contenido += '<footer>';
-                    contenido += '<ul class="actions">';
-                    //href="#" onclick="loadArticle('+articles[i]._id+')"
-                    contenido += '<li><button type="button" id="botonLeerMas'+articles[i]._id+'"  class="button big">Seguir Leyendo...</button></li>';
-                    contenido += '<script>';
-                    contenido += '$( "#botonLeerMas'+articles[i]._id+'" ).click(function() {';
-  				    contenido += 'loadArticle("'+articles[i]._id+'");';
-				    contenido += '});';
-				    contenido += '<'+'/script>';
-                    contenido += '</ul>';
-
-                    contenido += '<ul class="stats">';
-                    contenido += '<li><a href="#">Visitas 2200</a></li>';
-                    contenido += '<li><a href="#" class="icon fa-heart">28</a></li>';
-                    contenido += '<li><a href="#" class="icon fa-comment">128</a></li>';
-                    contenido += '</ul>';
-
-                    contenido += '</footer>';
-                    contenido += '</article>';
-                    i++
-                }
-
-                contenido += '<ul class="actions pagination">';
-                contenido += '<li><a href="" class="disabled button big previous">Anterior</a></li>';
-                contenido += '<li><a href="#" class="button big next">Siguiente</a></li>';
-                contenido += '</ul>';
-                $("#main").html(contenido);
-            });
-
-            
-
 		});// fin ready document
 
         function loadArticle(idPost){
@@ -145,9 +85,11 @@
                 noticia = JSON.parse(json);
                 noticia = noticia[0];
                 contenido = '';
+                contenido += '<ul class="actions">';
+                contenido += '<li><button type="button" id="backButton" onclick="loadArticles()" class="button big">Volver</button></li>';
+                contenido += '</ul>';
                 contenido += '<article class="post">';
                 contenido += '<header>';
-                 contenido += '<button type="button" onclick="/courses; return false;" class="ui-btn-left">Volver Atras</button>';
                 contenido += '<div class="title">';
                 contenido += '<h2><a href="#">' + noticia.title + '</a></h2>';
                 contenido += '</div>';
@@ -175,12 +117,61 @@
             });
         }
 
+        function loadArticles() {
+            $.get("/apiArticles", function (json) {
+                articles = JSON.parse(json);
+                var i = 0;
+                var contenido = '';
+                while (i < articles.length) {
+                    contenido += '<article class="post">';
+
+                    contenido += '<header>';
+                    contenido += '<div class="title">';
+                    contenido += '<h2><a href="#">' + articles[i].title + '</a></h2>';
+                    contenido += '</div>';
+
+                    contenido += '<div class="meta">';
+                    contenido += '<time class="published" datetime="2015-11-01"> falta guardar fecha</time>';
+                    contenido += '<a href="#" class="author"><span class="name" >' + articles[i].author + '</span></a>';
+                    contenido += '</div>';
+                    contenido += '</header>';
+
+                    var textoArticulo = articles[i].content;
+                    var porcionArticulo = textoArticulo.substring(0, 100); // 50 caracteres solamente,OJO creo q se rompe si hay menos de 50
 
 
+                    contenido += '<div style="word-wrap:break-word;display:block;width:inherit">' + porcionArticulo + '</div>';
 
+                    contenido += '<footer>';
+                    contenido += '<ul class="actions">';
+                    //href="#" onclick="loadArticle('+articles[i]._id+')"
+                    contenido += '<li><button type="button" id="botonLeerMas'+articles[i]._id+'"  class="button big">Seguir Leyendo...</button></li>';
+                    contenido += '<script>';
+                    contenido += '$( "#botonLeerMas'+articles[i]._id+'" ).click(function() {';
+                    contenido += 'loadArticle("'+articles[i]._id+'");';
+                    contenido += '});';
+                    contenido += '<'+'/script>';
+                    contenido += '</ul>';
 
+                    contenido += '<ul class="stats">';
+                    contenido += '<li><a href="#">Visitas 2200</a></li>';
+                    contenido += '<li><a href="#" class="icon fa-heart">28</a></li>';
+                    contenido += '<li><a href="#" class="icon fa-comment">128</a></li>';
+                    contenido += '</ul>';
+
+                    contenido += '</footer>';
+                    contenido += '</article>';
+                    i++
+                }
+
+                contenido += '<ul class="actions pagination">';
+                contenido += '<li><a href="" class="disabled button big previous">Anterior</a></li>';
+                contenido += '<li><a href="#" class="button big next">Siguiente</a></li>';
+                contenido += '</ul>';
+                $("#main").html(contenido);
+            });
+        }
 		</script>
-
 
     </head>
 	<body>
@@ -241,6 +232,35 @@
 
 				<!-- Main -->
 					<div id="main">
+                        {{#articles}}
+                        <article class="post">
+                            <header>
+                                <div class="title">
+                                    <h2><a href="#">{{title}}</a></h2>
+                                    <p>posible descripcion</p>
+                                </div>
+                                <div class="meta">
+                                    <time class="published" datetime="2015-11-01">Falta guardar la fecha</time>
+                                    <a href="#" class="author"><span class="name">{{author}}</span></a>
+                                </div>
+                            </header>
+                            {{{makeResume content}}}
+                            <footer>
+                                <ul class="actions">
+                                    <li><a href="" class="button big" id="botonLeerMas{{_id}}">Seguir Leyendo...</a></li>
+                                    <script>
+                                        $(botonLeerMas{{_id}}).click(function() {
+                                            loadArticle({{_id}});
+                                        })
+                                    </script>
+                                </ul>
+                                <ul class="stats">
+                                    <li><a href="#" class="icon fa-heart">28</a></li>
+                                    <li><a href="#" class="icon fa-comment">128</a></li>
+                                </ul>
+                            </footer>
+                        </article>
+                        {{/articles}}
 					</div>
 
 				<!-- Sidebar -->
